@@ -1,4 +1,6 @@
 #Discord Bot for Tam High Engineering Server
+Developed by @nathanielknopf and @Magicsteve46
 
 ##Features to Add
-* DND Dice Rolling
+- [] Develop an actual bot
+- [] DND Dice Rolling
