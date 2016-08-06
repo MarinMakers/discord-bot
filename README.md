@@ -1,6 +1,13 @@
 #Discord Bot for Tam High Engineering Server
-Developed by [Nathaniel Knopf](http://github.com/nathanielknopf/) and [Stephen Rivest](http://github.com/Magicsteve46/)
+In which we attempt to develop a bot for Discord from scratch.
 
-##Features to Add
-- Develop an actual bot
-- DND Dice Rolling
+###Planned Features
+- Last Seen
+- Dice Rolling
+
+###Developers
+- [Nathaniel Knopf](https://github.com/nathanielknopf/)
+- [Stephen Rivest](https://github.com/Magicsteve46/)
+- [Morgaine Mandigo-Stoba](https://github.com/mmandigostoba)
+- [Miles Florence](https://github.com/milesflo)
+- [Sean Dow](https://github.com/bobthepally)
