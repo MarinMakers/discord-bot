@@ -1,4 +1,4 @@
-#Discord Bot for Tam High Engineering Server
+#Discord Bot for Marin Makers' Discord Server
 In which we attempt to develop a bot for Discord from scratch.
 
 ###Planned Features
