@@ -29,7 +29,8 @@ bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
 	if (message.isMentioned(bot.user)) {
-		bot.sendMessage("Hello!");
+		//use bot.sendMessage
+		bot.sendMessage(message.channel,"Hello!");
 	}
 	console.log(message);
 })
