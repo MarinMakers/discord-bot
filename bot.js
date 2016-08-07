@@ -22,5 +22,5 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
-	//do things
+	console.log(message)
 })
