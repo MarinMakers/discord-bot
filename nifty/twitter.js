@@ -13,14 +13,19 @@ var client = new Twitter({
 	access_token_secret: discord_auth.twitter.access_token_secret,})
 
 //figure out how to do stuff lol
-var postTweet = function(tweet){
-	client.post('status/update', {status: tweet}, function(error, tweet, response){
-		if(error){
-			throw(error)
-		}
-		console.log("Tweeted: " + tweet)
-		console.log("Response: " + response)
-	})
+var postTweet = function(user, tweet, done){
+	if(user.hasRole("tweeter")){
+		client.post('status/update', {status: tweet}, function(error, tweet, response){
+			if(error){
+				throw(error)
+			}
+			else {
+				done()
+			}
+			console.log("Tweeted: " + tweet)
+			console.log("Response: " + response)
+		})
+	}
 }
 
 var search = function(query){
