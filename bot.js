@@ -1,5 +1,11 @@
 //This is the main script for the bot. To start the bot, run this script with node
-var Discord = require('discord.js');
+try {
+	var Discord = require("discord.js");
+} catch (e){
+	console.log("Please run npm install and ensure it passes with no errors!");
+	process.exit();
+}
+
 var discord_auth = require('./auth.json');
 
 var bot = new Discord.Client();
