@@ -31,8 +31,9 @@ bot.on('message', function(message){
 	//if bot is mentioned
 	if (message.isMentioned(bot.user)) {
 		//Trim the mention from the message and any whitespace
-		var command = message.content.substring(message.content+4,message.content.length).trim();
+		var command = message.content.substring(bot.user.id.length+4,message.content.length).trim();
 		//If first character is !, <insert hella commands>
+		console.log(command);
 		if (command.substring(0,1) === "!") {
 			bot.sendMessage(message.channel, "Yo! That was a command");
 		} else {
