@@ -1,0 +1,9 @@
+//this is an example of what an auth.json file should look like.
+//You have to make your auth.json file locally or things will break.
+//DO NOT UPLOAD YOUR auth.json FILE TO GITHUB. Bots steal yo info.
+
+{
+	doscord_login_key: <API_KEY>
+	youtube_key: <API_KEY>,
+	google_api_key: <API_KEY>
+}
