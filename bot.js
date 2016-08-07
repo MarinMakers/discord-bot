@@ -12,7 +12,7 @@ try {
 	console.log("Auth file not found!");
 }
 
-var discord_auth = require('./auth.json');
+var http = require('http');
 
 var bot = new Discord.Client();
 
@@ -29,4 +29,8 @@ bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
 	console.log(message);
+})
+
+http.createServer().listen(6969, function(){
+	console.log("Listening on port 6969");
 })
