@@ -28,11 +28,17 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
+	//if bot is mentioned
 	if (message.isMentioned(bot.user)) {
-		//use bot.sendMessage
-		bot.sendMessage(message.channel,"Hello!");
+		//Trim the mention from the message and any whitespace
+		var command = message.content.substring(message.content+4,message.content.length).trim();
+		//If first character is !, <insert hella commands>
+		if (command.substring(0,1) === "!") {
+			bot.sendMessage(message.channel, "Yo! That was a command");
+		} else {
+			bot.sendMessage(message.channel, "That was not a command");
+		}
 	}
-	console.log(message);
 })
 
 http.createServer().listen(6969, function(){
