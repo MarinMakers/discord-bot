@@ -28,6 +28,9 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
+	if (message.isMentioned(bot.user)) {
+		bot.sendMessage("Hello!");
+	}
 	console.log(message);
 })
 
