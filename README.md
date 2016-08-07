@@ -1,14 +1,16 @@
 #Discord Bot for Marin Makers' Discord Server
 In which we attempt to develop a bot for Discord from scratch.
 
+![Bot](http://i68.tinypic.com/10hr2tk.png)
+
 ###Planned Features
-- Last Seen
-- Dice Rolling
-- Polls/Voting
-- Query WolframAlpha, other search engines
-- Help/rules posting
-- Nifty webpage for configuring bot
-- Interacting with webpage from discord
+- [ ] Last Seen
+- [ ] Dice Rolling
+- [ ] Polls/Voting
+- [ ] Query WolframAlpha, other search engines
+- [ ] Help/rules posting
+- [ ] Nifty webpage for configuring bot
+- [ ] Interacting with webpage from discord
 
 ###Developers
 - [Nathaniel Knopf](https://github.com/nathanielknopf/)
