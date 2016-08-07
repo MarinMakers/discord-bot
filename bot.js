@@ -29,17 +29,12 @@ bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
 	if (message.isMentioned(bot.user)) {
-<<<<<<< HEAD
-		message.content = msg.content.substring(bot.user.id.length + 4, msg.content.length).trim();
+		message.content = message.content.substring(bot.user.id.length + 4, message.content.length).trim();
 		console.log(message.content)
 		//everything goes in here
-		// bot.sendMessage(message.channel, "Hello!");
-=======
-		//use bot.sendMessage
 		bot.sendMessage(message.channel,"Hello!");
->>>>>>> 4be9e30c50a267b5fa68b063b52d648fc37b2c5e
 	}
-	console.log(message);
+	//console.log(message)
 })
 
 http.createServer().listen(6969, function(){
