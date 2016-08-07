@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/milesflo/discord-bot/issues"
   },
-  "homepage": "https://github.com/milesflo/discord-bot#readme"
+  "homepage": "https://github.com/milesflo/discord-bot#readme",
+  "dependencies": {
+    "discord.js": "^8.1.0"
+  }
 }
