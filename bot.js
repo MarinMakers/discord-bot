@@ -6,6 +6,12 @@ try {
 	process.exit();
 }
 
+try {
+	var discord_auth = require('./auth.json');
+} catch (e) {
+	console.log("Auth file not found!");
+}
+
 var discord_auth = require('./auth.json');
 
 var bot = new Discord.Client();
@@ -14,7 +20,7 @@ function output(error, token) {
     if (error) {
         console.log('There was an error logging in: ' + error);
         return;
-    } else
+    } else {
         console.log('Logged in. Token: ' + token);
     }
 }
@@ -22,5 +28,5 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
-	console.log(message)
+	console.log(message);
 })
