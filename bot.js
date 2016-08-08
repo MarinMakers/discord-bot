@@ -83,8 +83,12 @@ bot.on('message', function(message){
 			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
 				if (to_execute == '!tweet') {
-					commands[to_execute].process(message.author, argument, function(){
-						bot.sendMessage(message.channel, "Tweet posted!")
+					commands[to_execute].process(twitter_client, message.author, argument, function(success){
+						if(success){
+							bot.sendMessage(message.channel, "Tweet posted!")
+						}else{
+							bot.sendMessage(message.channel, "Tweet failed to post :( !")
+						}
 					});
 				}  else if (to_execute == '!help') {
 					commands[to_execute].process(message.author);
