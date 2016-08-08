@@ -14,21 +14,23 @@ var client = new Twitter({
 
 //figure out how to do stuff lol
 var postTweet = function(client, user, tweet, done){
-//	if(user.hasRole("tweeter")){
+	if(user.hasRole('tweeter'){
 		console.log("user has roll of tweeter")
 		client.post('statuses/update', {status: tweet}, function(error, tweet, response){
 			if(error){
 				console.log('error: ' + error)
+				done(false)
 			}
 			else {
-				done()
+				done(true))
 			}
 			console.log("Tweeted: " + tweet)
 			console.log("Response: " + response)
 		})
-//	}else{
-//		console.log("kill yourself")
-//	}
+	}else{
+		done(false)
+		console.log("somebody isn't allowed to tweet :-( !")
+	}
 }
 
 var search = function(query){

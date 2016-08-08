@@ -56,7 +56,12 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if(to_execute == '!tweet'){
-				commands[to_execute](twitter_client, message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
+				commands[to_execute](twitter_client, message.author, argument, function(success){
+					if(success){
+						bot.sendMessage(message.channel, "Tweet posted!")
+					}else{
+						bot.sendMessage(message.channel, "Tweet failed to post :(");
+					});
 			}else{
 				commands[to_execute](argument, function(result){
 					console.log("stuff")
