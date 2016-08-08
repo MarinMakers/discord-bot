@@ -55,7 +55,7 @@ var commands = {
 	},
 	'!roll': {
 		process: decider.rollDice,
-		usage: "!roll <d20 syntax>,
+		usage: "!roll <d20 syntax>",
 		description: "Roll dice using d20 syntax"
 	}
 }
