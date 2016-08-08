@@ -66,7 +66,7 @@ var commands = {
 		process: function(user, channel, server, tweet) {
 			var can_tweet = checkRole(user, server, 'tweeter')
 			if(can_tweet){
-				twitter_bot.postTweet(twitter_client, user, tweet, message.server.rolesfunction(success){
+				twitter_bot.postTweet(twitter_client, user, tweet, function(success){
 					if(success){
 						bot.sendMessage(channel, "Tweet posted!");
 					}else{
