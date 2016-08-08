@@ -1,8 +1,8 @@
 // rolls a dice with to_roll sides
 var d20 = require('d20');
 
-var roll = function(to_roll){
-	return d20.roll(to_roll)
+var roll = function(to_roll, callbackFunction){
+	callbackFunction(d20.roll(to_roll))
 }
 
 // flips a coin

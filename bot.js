@@ -13,6 +13,14 @@ try {
 }
 
 var http = require('http');
+var Twitter = require('twitter');
+
+var twitter_client = new Twitter({
+	consumer_key: discord_auth.twitter.consumer_key,
+	consumer_secret: discord_auth.twitter.consumer_secret,
+	access_token_key: discord_auth.twitter.access_token_key,
+	access_token_secret: discord_auth.twitter.access_token_secret
+})
 
 var bot = new Discord.Client();
 var twitter_bot = require('./nifty/twitter.js');
@@ -20,7 +28,7 @@ var decider = require('./nifty/decisions.js');
 
 var commands = {
 	'!tweet': twitter_bot.postTweet,
-	'!roll': decider.roll
+	'!roll': decider.rollDice
 }
 
 function output(error, token) {
@@ -48,9 +56,12 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if(to_execute == '!tweet'){
-				commands[to_execute](message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
+				commands[to_execute](twitter_client, message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
 			}else{
-				commands[to_execute](argument, function(result){bot.sendMessage(message.chanel, "Roll: " + result + ".")});
+				commands[to_execute](argument, function(result){
+					console.log("stuff")
+					bot.sendMessage(message.chanel, "Roll: " + result + ".")
+				});
 			}
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
