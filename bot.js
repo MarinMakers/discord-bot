@@ -1,4 +1,11 @@
 //This is the main script for the bot. To start the bot, run this script with node
+var port = 8080
+try {
+	var port = process.argv[2];
+} catch (e){
+	console.log("Port not given - defaulting to 8080");
+}
+
 try {
 	var Discord = require("discord.js");
 } catch (e){
@@ -106,6 +113,6 @@ bot.on('message', function(message){
 	}
 })
 
-http.createServer().listen(6969, function(){
-	console.log("Listening on port 6969");
+http.createServer().listen(port, function(){
+	console.log("Listening on port: " + port);
 })
