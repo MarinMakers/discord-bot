@@ -77,9 +77,7 @@ bot.on('message', function(message){
 		//Trim the mention from the message and any whitespace
 		var command = message.content.substring(bot.user.id.length+4,message.content.length).trim();
 		//If first character is !, <insert hella commands>
-		console.log(command);
 		if (command.substring(0,1) === "!") {
-			bot.sendMessage(message.channel, "Yo! That was a command");
 			var to_execute = command.split(' ')[0];
 			var argument = command.substring(command.indexOf(' ')+1, command.length);
 			console.log('command: ' + to_execute);
@@ -95,8 +93,6 @@ bot.on('message', function(message){
 			}  else {
 				bot.sendMessage(message.channel, "Unknown Command");
 			}
-		} else {
-			bot.sendMessage(message.channel, "That was not a command");
 		}
 	}
 })
