@@ -70,7 +70,7 @@ var commands = {
 		},
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
-	}
+	},
 	'!help': {
 		process: function(user, channel, argument) {
 			bot.sendMessage(user, "Available Commands: ", function() {
