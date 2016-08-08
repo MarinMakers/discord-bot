@@ -66,7 +66,7 @@ var commands = {
 	'!ping': {
 		process: function(user, channel, argument){
 			bot.sendMessage(channel, "Dumped user info to console.");
-			console.log("User info: " + user)
+			console.log("User info: " + user);
 		},
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
