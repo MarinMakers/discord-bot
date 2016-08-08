@@ -19,8 +19,14 @@ try {
 	console.log("Auth file not found!");
 }
 
+var bot = new Discord.Client();
+
 var http = require('http');
+
 var Twitter = require('twitter');
+
+var twitter_bot = require('./nifty/twitter.js');
+var decider = require('./nifty/decisions.js');
 
 var twitter_client = new Twitter({
 	consumer_key: discord_auth.twitter.consumer_key,
@@ -29,9 +35,15 @@ var twitter_client = new Twitter({
 	access_token_secret: discord_auth.twitter.access_token_secret
 })
 
-var bot = new Discord.Client();
-var twitter_bot = require('./nifty/twitter.js');
-var decider = require('./nifty/decisions.js');
+//call checkRole(message.sender, message.server, 'role')
+var checkRole = function(user, server, role){
+	for (var i = 0; i < server.roles.length; i++){
+		if(server.roles[i] == role && user.hasRole(server.roles[i])){
+			return true
+		}
+	}
+	return false
+}
 
 var commands = {
 	//example command object
@@ -42,7 +54,7 @@ var commands = {
 	//In general, one should design their functions to take a callback function as the last parameters, which
 	//is to be defined in this object. The callback can handle things like messaging the channel or users.
 	//'!example': {
-		//process: function(user, channel, arguments){
+		//process: function(user, channel, server, message){
 			//my_package.myFunction(foo, bar, callbackFunction(){
 				//bot.sendMessage(channel, "Example callback executed")	
 			//})
@@ -51,38 +63,33 @@ var commands = {
 		//description: "This is an example implementation of a command.",
 	//},
 	'!tweet': {
-		process: function(user, channel, tweet, message) {
-			twitter_bot.postTweet(twitter_client, user, tweet, function(success){
-				if(success){
-					bot.sendMessage(channel, "Tweet posted!");
-				}else{
-					bot.sendMessage(channel, "Tweet failed to post :( !");
-				};
-			})
+		process: function(user, channel, server, tweet) {
+			var can_tweet = checkRole(user, server, 'tweeter')
+			if(can_tweet){
+				twitter_bot.postTweet(twitter_client, user, tweet, message.server.rolesfunction(success){
+					if(success){
+						bot.sendMessage(channel, "Tweet posted!");
+					}else{
+						bot.sendMessage(channel, "Tweet failed to post :( !");
+					};
+				})
+			}else{
+				bot.sendMessage(channel, "You must have role 'tweeter' to post a tweet.")
+			}
 		},
 		usage: "!tweet <tweet body>",
-		description: "Post a tweet from the twitter channel"
+		description: "Post a tweet from the twitter channel. You must have the role 'tweeter' to post a tweet"
 	},
 	'!ping': {
-		process: function(user, channel, argument, message){
-			bot.sendMessage(channel, "Dumped user info to console.");
-			console.log("User info: " + user);
-			for(var i = 0; i < message.server.roles.length; i++){
-				var role = message.server.roles[i];
-				if (role.name == 'Admin'){
-					if(user.hasRole(role)){
-						console.log("Admin");
-					}else{
-						console.log("Not Admin");
-					};
-				};
-			};
+		process: function(user, channel, server, argument){
+			bot.sendMessage(channel, "Hi there, " + user.name + "! :)");
+			console.log("Ping from " + user + " aka " + user.name);
 		},
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
 	},
 	'!help': {
-		process: function(user, channel, argument, message) {
+		process: function(user, channel, server, argument) {
 			bot.sendMessage(user, "Available Commands: ", function() {
 				for (var cmd in commands) {
 					var info = cmd;
@@ -102,7 +109,7 @@ var commands = {
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
-		process: function(user, channel, argument, message) {
+		process: function(user, channel, server, argument) {
 			decider.rollDice(argument)
 		},
 		usage: "!roll <d20 syntax>",
@@ -133,9 +140,9 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
-				commands[to_execute].process(message.author, message.channel, argument, message)
+				commands[to_execute].process(message.author, message.channel, message.server, argument)
 			}  else {
-				bot.sendMessage(message.channel, "Unknown Command");
+				bot.sendMessage(message.channel, "Unknown Command :(");
 			}
 		}
 	}
