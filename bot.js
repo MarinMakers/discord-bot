@@ -31,9 +31,9 @@ var commands = {
 		process: function(user,channel,text) {
 			twitter_bot.postTweet(twitter_client, user, text, function(success){
 				if(success){
-					bot.sendMessage(message.channel, "Tweet posted!")
+					bot.sendMessage(channel, "Tweet posted!")
 				}else{
-					bot.sendMessage(message.channel, "Tweet failed to post :( !")
+					bot.sendMessage(channel, "Tweet failed to post :( !")
 				}
 			})
 		},
