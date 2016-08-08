@@ -16,9 +16,11 @@ var http = require('http');
 
 var bot = new Discord.Client();
 var twitter_bot = require('./nifty/twitter.js');
+var decider = require('./nifty/decisions.js');
 
 var commands = {
-	'!tweet': twitter_bot.postTweet
+	'!tweet': twitter_bot.postTweet,
+	'!roll': decider.roll
 }
 
 function output(error, token) {
@@ -47,6 +49,8 @@ bot.on('message', function(message){
 			console.log('argument: ' + argument);
 			if(to_execute == '!tweet'){
 				commands[to_execute](message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
+			}else{
+				commands[to_execute](argument);
 			}
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
