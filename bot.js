@@ -29,7 +29,7 @@ var decider = require('./nifty/decisions.js');
 var commands = {
 	'!tweet': {
 		process: twitter_bot.postTweet,
-		usage: "!tweet <tweet body>"
+		usage: "!tweet <tweet body>",
 		description: "Post a tweet from the twitter channel"
 	},
 	'!help': {
@@ -47,10 +47,10 @@ var commands = {
 						}
 						bot.sendMessage(user,info);
 					}
-				}
-			})
+				})
+			}
 		},
-		usage: "!help"
+		usage: "!help",
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
