@@ -51,7 +51,7 @@ var commands = {
 		//description: "This is an example implementation of a command.",
 	//},
 	'!tweet': {
-		process: function(user, channel, tweet) {
+		process: function(user, channel, tweet, message) {
 			twitter_bot.postTweet(twitter_client, user, tweet, function(success){
 				if(success){
 					bot.sendMessage(channel, "Tweet posted!");
@@ -64,15 +64,25 @@ var commands = {
 		description: "Post a tweet from the twitter channel"
 	},
 	'!ping': {
-		process: function(user, channel, argument){
+		process: function(user, channel, argument, message){
 			bot.sendMessage(channel, "Dumped user info to console.");
 			console.log("User info: " + user);
+			for(var i = 0; i < message.server.roles.length; i++){
+				var role = message.server.roles[i];
+				if (role.name == 'Admin'){
+					if(user.hasRole(role)){
+						console.log("Admin");
+					}else{
+						console.log("Not Admin");
+					};
+				};
+			};
 		},
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
 	},
 	'!help': {
-		process: function(user, channel, argument) {
+		process: function(user, channel, argument, message) {
 			bot.sendMessage(user, "Available Commands: ", function() {
 				for (var cmd in commands) {
 					var info = cmd;
@@ -92,7 +102,7 @@ var commands = {
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
-		process: function(user, channel, argument) {
+		process: function(user, channel, argument, message) {
 			decider.rollDice(argument)
 		},
 		usage: "!roll <d20 syntax>",
@@ -123,7 +133,7 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
-				commands[to_execute].process(message.author, message.channel, argument)
+				commands[to_execute].process(message.author, message.channel, argument, message)
 			}  else {
 				bot.sendMessage(message.channel, "Unknown Command");
 			}
