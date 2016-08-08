@@ -37,8 +37,12 @@ bot.on('message', function(message){
 	if (message.isMentioned(bot.user)) {
 		//Trim the mention from the message and any whitespace
 		var command = message.content.substring(bot.user.id.length+4,message.content.length).trim();
+<<<<<<< HEAD
 		console.log('command: ' + command);
+=======
+>>>>>>> 2f3853fb32c214813cd0f7ea636c8699f331b287
 		//If first character is !, <insert hella commands>
+		console.log(command);
 		if (command.substring(0,1) === "!") {
 			bot.sendMessage(message.channel, "Yo! That was a command");
 			var to_execute = command.split(' ')[0];
