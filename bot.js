@@ -90,8 +90,12 @@ bot.on('message', function(message){
 							bot.sendMessage(message.channel, "Tweet failed to post :( !")
 						}
 					});
-				}  else if (to_execute == '!help') {
+				} else if (to_execute == '!help') {
 					commands[to_execute].process(message.author);
+				} else {
+					commands[to_execute].process(argument, function(result){
+						bot.sendMessage(message.channel, "result: " + result)
+					})
 				}
 			}  else {
 				bot.sendMessage(message.channel, "Unknown Command");
