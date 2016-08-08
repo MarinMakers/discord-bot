@@ -34,21 +34,37 @@ var twitter_bot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 
 var commands = {
+	//example command object
+	//each object has three attributes: process, usage, and description.
+	//usage and description are to help users when they run !help
+	//the process attribute contains the definition of a function which calls the desired feature,
+	//which should be imported from a .js file stored in the nifty directory.
+	//In general, one should design their functions to take a callback function as the last parameters, which
+	//is to be defined in this object. The callback can handle things like messaging the channel or users.
+	//'!example': {
+		//process: function(user, channel, arguments){
+			//my_package.myFunction(foo, bar, callbackFunction(){
+				//bot.sendMessage(channel, "Example callback executed")	
+			//})
+		//},
+		//usage: "!example <arguments>",
+		//description: "This is an example implementation of a command.",
+	//},
 	'!tweet': {
-		process: function(user,channel,text) {
-			twitter_bot.postTweet(twitter_client, user, text, function(success){
+		process: function(user, channel, tweet) {
+			twitter_bot.postTweet(twitter_client, user, tweet, function(success){
 				if(success){
-					bot.sendMessage(channel, "Tweet posted!")
+					bot.sendMessage(channel, "Tweet posted!");
 				}else{
-					bot.sendMessage(channel, "Tweet failed to post :( !")
-				}
+					bot.sendMessage(channel, "Tweet failed to post :( !");
+				};
 			})
 		},
 		usage: "!tweet <tweet body>",
 		description: "Post a tweet from the twitter channel"
 	},
 	'!help': {
-		process: function(user) {
+		process: function(user, channel, argument) {
 			bot.sendMessage(user, "Available Commands:", function() {
 				for (var cmd in commands) {
 					var info = cmd;
@@ -68,8 +84,8 @@ var commands = {
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
-		process: function(user,channel,arguements) {
-			decider.rollDice
+		process: function(user, channel, argument) {
+			decider.rollDice(argument)
 		},
 		usage: "!roll <d20 syntax>",
 		description: "Roll dice using d20 syntax"
@@ -99,13 +115,7 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
-				if (to_execute == '!help') {
-					commands[to_execute].process(message.author, argument);
-				} else {
-					commands[to_execute].process(message.author, message.channel, argument, function(result){
-						bot.sendMessage(message.channel, "result: " + result)
-					})
-				}
+				commands[to_execute].process(message.author, message.channel, argument)
 			}  else {
 				bot.sendMessage(message.channel, "Unknown Command");
 			}
