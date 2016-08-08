@@ -13,9 +13,18 @@ try {
 }
 
 var http = require('http');
+var Twitter = require('twitter');
+
+var twitter_client = new Twitter({
+	consumer_key: discord_auth.twitter.consumer_key,
+	consumer_secret: discord_auth.twitter.consumer_secret,
+	access_token_key: discord_auth.twitter.access_token_key,
+	access_token_secret: discord_auth.twitter.access_token_secret
+})
 
 var bot = new Discord.Client();
 var twitter_bot = require('./nifty/twitter.js');
+var decider = require('./nifty/decisions.js');
 
 var commands = {
 	'!tweet': {
@@ -43,6 +52,11 @@ var commands = {
 		},
 		usage: "!help"
 		description: "PM's users a list of commands and invocation"
+	},
+	'!roll': {
+		process: decider.rollDice,
+		usage: "!roll <d20 syntax>,
+		description: "Roll dice using d20 syntax"
 	}
 }
 
