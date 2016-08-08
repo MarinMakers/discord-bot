@@ -84,31 +84,20 @@ bot.on('message', function(message){
 			var argument = command.substring(command.indexOf(' ')+1, command.length);
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
-<<<<<<< HEAD
-			if(to_execute == '!tweet'){
-				commands[to_execute](twitter_client, message.author, argument, function(success){
-					if(success){
-						bot.sendMessage(message.channel, "Tweet posted!")
-					}else{
-						bot.sendMessage(message.channel, "Tweet failed to post :(");
-					});
-			}else{
-				commands[to_execute](argument, function(result){
-					console.log("stuff")
-					bot.sendMessage(message.chanel, "Roll: " + result + ".")
-				});
-=======
 			if (commands[to_execute]) {
 				if (to_execute == '!tweet') {
-					commands[to_execute].process(message.author, argument, function(){
-						bot.sendMessage(message.channel, "Tweet posted!")
+					commands[to_execute].process(twitter_client, message.author, argument, function(success){
+						if(success){
+							bot.sendMessage(message.channel, "Tweet posted!")
+						}else{
+							bot.sendMessage(message.channel, "Tweet failed to post :( !")
+						}
 					});
 				}  else if (to_execute == '!help') {
 					commands[to_execute].process(message.author);
 				}
 			}  else {
 				bot.sendMessage(message.channel, "Unknown Command");
->>>>>>> 81aef02a59d68ec04e21dcd8e04398bebd91f5ad
 			}
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
