@@ -18,7 +18,32 @@ var bot = new Discord.Client();
 var twitter_bot = require('./nifty/twitter.js');
 
 var commands = {
-	'!tweet': twitter_bot.postTweet
+	'!tweet': {
+		process: twitter_bot.postTweet,
+		usage: "!tweet <tweet body>"
+		description: "Post a tweet from the twitter channel"
+	},
+	'!help': {
+		process: function(user) {
+			bot.sendMessage(user, "Available Commands:", function() {
+				for (var cmd in commands) {
+					var info = cmd;
+					var usage = commands[cmd].usage;
+					if (usage) {
+						info += " " + usage;
+					}
+					var description = commands[cmd].description;
+						if(description){
+							info += "\n\t" + description;
+						}
+						bot.sendMessage(user,info);
+					}
+				}
+			})
+		},
+		usage: "!help"
+		description: "PM's users a list of commands and invocation"
+	}
 }
 
 function output(error, token) {
@@ -45,8 +70,16 @@ bot.on('message', function(message){
 			var argument = command.substring(command.indexOf(' ')+1, command.length);
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
-			if(to_execute == '!tweet'){
-				commands[to_execute](message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
+			if (commands[to_execute]) {
+				if (to_execute == '!tweet') {
+					commands[to_execute].process(message.author, argument, function(){
+						bot.sendMessage(message.channel, "Tweet posted!")
+					});
+				}  else if (to_execute == '!help') {
+					commands[to_execute].process(message.author);
+				}
+			}  else {
+				bot.sendMessage(message.channel, "Unknown Command");
 			}
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
