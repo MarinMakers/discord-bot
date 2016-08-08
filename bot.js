@@ -63,9 +63,17 @@ var commands = {
 		usage: "!tweet <tweet body>",
 		description: "Post a tweet from the twitter channel"
 	},
+	'!ping': {
+		process: function(user, channel, argument){
+			bot.sendMessage(channel, "Dumped user info to console.");
+			console.log("User info: " + user)
+		},
+		usage: "!ping",
+		description: "dumps info on the user to the console of the server."
+	}
 	'!help': {
 		process: function(user, channel, argument) {
-			bot.sendMessage(user, "Available Commands:", function() {
+			bot.sendMessage(user, "Available Commands: ", function() {
 				for (var cmd in commands) {
 					var info = cmd;
 					var usage = commands[cmd].usage;
