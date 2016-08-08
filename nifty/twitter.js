@@ -1,7 +1,7 @@
 var Twitter = require('twitter');
 
 try {
-	var discord_auth = require('./auth.json');
+	var discord_auth = require('../auth.json');
 } catch (e) {
 	console.log("Auth file not found!");
 }

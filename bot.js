@@ -15,6 +15,11 @@ try {
 var http = require('http');
 
 var bot = new Discord.Client();
+var twitter_bot = require('./nifty/twitter.js');
+
+var commands = {
+	'!tweet': twitter_bot.postTweet
+}
 
 function output(error, token) {
     if (error) {
@@ -31,10 +36,15 @@ bot.on('message', function(message){
 	//if bot is mentioned
 	if (message.isMentioned(bot.user)) {
 		//Trim the mention from the message and any whitespace
-		var command = message.content.substring(message.content+4,message.content.length).trim();
+		var command = message.content.substring(bot.user.id.length+4,message.content.length).trim();
+		console.log('command: ' + command);
 		//If first character is !, <insert hella commands>
 		if (command.substring(0,1) === "!") {
 			bot.sendMessage(message.channel, "Yo! That was a command");
+			var to_execute = command.split(' ')[0];
+			var argument = command.substring(command.indexOf(' ')+1, command.length);
+			console.log('command: ' + to_execute)
+			console.log('argument: ' + argument)
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
 		}
