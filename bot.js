@@ -28,7 +28,15 @@ var decider = require('./nifty/decisions.js');
 
 var commands = {
 	'!tweet': {
-		process: twitter_bot.postTweet,
+		process: function(user,channel,text) {
+			twitter_bot.postTweet(twitter_client, user, text, function(success){
+				if(success){
+					bot.sendMessage(message.channel, "Tweet posted!")
+				}else{
+					bot.sendMessage(message.channel, "Tweet failed to post :( !")
+				}
+			})
+		},
 		usage: "!tweet <tweet body>",
 		description: "Post a tweet from the twitter channel"
 	},
@@ -53,7 +61,9 @@ var commands = {
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
-		process: decider.rollDice,
+		process: function(user,channel,arguements) {
+			decider.rollDice
+		},
 		usage: "!roll <d20 syntax>",
 		description: "Roll dice using d20 syntax"
 	}
@@ -82,18 +92,10 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
-				if (to_execute == '!tweet') {
-					commands[to_execute].process(twitter_client, message.author, argument, function(success){
-						if(success){
-							bot.sendMessage(message.channel, "Tweet posted!")
-						}else{
-							bot.sendMessage(message.channel, "Tweet failed to post :( !")
-						}
-					});
-				} else if (to_execute == '!help') {
-					commands[to_execute].process(message.author);
+				if (to_execute == '!help') {
+					commands[to_execute].process(message.author, argument);
 				} else {
-					commands[to_execute].process(argument, function(result){
+					commands[to_execute].process(message.author, message.channel, argument, function(result){
 						bot.sendMessage(message.channel, "result: " + result)
 					})
 				}
