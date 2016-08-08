@@ -50,7 +50,7 @@ bot.on('message', function(message){
 			if(to_execute == '!tweet'){
 				commands[to_execute](message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
 			}else{
-				commands[to_execute](argument);
+				commands[to_execute](argument, function(result){bot.sendMessage(message.chanel, "Roll: " + result + ".")});
 			}
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
