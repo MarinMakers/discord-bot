@@ -43,8 +43,11 @@ bot.on('message', function(message){
 			bot.sendMessage(message.channel, "Yo! That was a command");
 			var to_execute = command.split(' ')[0];
 			var argument = command.substring(command.indexOf(' ')+1, command.length);
-			console.log('command: ' + to_execute)
-			console.log('argument: ' + argument)
+			console.log('command: ' + to_execute);
+			console.log('argument: ' + argument);
+			if(to_execute == '!tweet'){
+				commands[to_execute](message.author, argument, function(){bot.sendMessage(message.channel, "Tweet posted!")});
+			}
 		} else {
 			bot.sendMessage(message.channel, "That was not a command");
 		}
