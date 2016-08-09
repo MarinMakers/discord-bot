@@ -1,5 +1,4 @@
 //This is the main script for the bot. To start the bot, run this script with node
-//comment to check if this thing works
 var port = 8080
 try {
 	var port = process.argv[2];
@@ -25,6 +24,7 @@ var bot = new Discord.Client();
 var http = require('http');
 
 var Twitter = require('twitter');
+var child_process = require('child_process');
 
 var twitter_bot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
@@ -65,8 +65,7 @@ var commands = {
 	//},
 	'!tweet': {
 		process: function(user, channel, server, tweet) {
-			var can_tweet = checkRole(user, server, 'tweeter')
-			if(can_tweet){
+			if(checkRoloe(user, server, 'tweeter')){
 				twitter_bot.postTweet(twitter_client, user, tweet, function(success){
 					if(success){
 						bot.sendMessage(channel, "Tweet posted!");
@@ -88,6 +87,23 @@ var commands = {
 		},
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
+	},
+	'!pull': {
+		process: function(user, channel, server, argument){
+			if (checkRole(user, server, 'developer'){
+				child_process.exec('git pull', function(error, stdout, stderr){
+					if(error){
+						console.log(error);
+						bot.sendMessage(channel, 'error: ' + error);
+						return;
+					}
+					bot.sendMessage(channel, 'stdout: ' + stdout);
+					bot.sendMessage(channel, 'stderr: ' + stderr);
+				})
+			})
+		},
+		usage: "!pull",
+		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
 	},
 	'!help': {
 		process: function(user, channel, server, argument) {
