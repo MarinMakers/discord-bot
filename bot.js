@@ -110,7 +110,9 @@ var commands = {
 	},
 	'!roll': {
 		process: function(user, channel, server, argument) {
-			decider.rollDice(argument)
+			decider.rollDice(argument, function(result){
+				console.log(result)
+			})
 		},
 		usage: "!roll <d20 syntax>",
 		description: "Roll dice using d20 syntax"
