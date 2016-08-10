@@ -90,7 +90,7 @@ var commands = {
 	},
 	'!pull': {
 		process: function(message, argument){
-			if (checkRole(message.author, message.server, 'developer'){
+			if (checkRole(message.author, message.server, 'developer')){
 				child_process.exec('git pull', function(error, stdout, stderr){
 					if(error){
 						console.log(error);
@@ -100,7 +100,7 @@ var commands = {
 					bot.sendMessage(message.channel, 'stdout: ' + stdout);
 					bot.sendMessage(message.channel, 'stderr: ' + stderr);
 				})
-			})
+			}
 		},
 		usage: "!pull",
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
