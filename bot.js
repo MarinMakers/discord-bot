@@ -39,7 +39,7 @@ var twitter_client = new Twitter({
 //call checkRole(message.sender, message.server, 'role')
 var checkRole = function(user, server, role){
 	for (var i = 0; i < server.roles.length; i++){
-		if(server.roles[i] == role && user.hasRole(server.roles[i])){
+		if(server.roles[i] == role && message.author.hasRole(server.roles[i])){
 			return true
 		}
 	}
@@ -55,7 +55,7 @@ var commands = {
 	//In general, one should design their functions to take a callback function as the last parameters, which
 	//is to be defined in this object. The callback can handle things like messaging the channel or users.
 	//'!example': {
-		//process: function(user, channel, server, message){
+		//process: function(user, channel, message.server, message){
 			//my_package.myFunction(foo, bar, callbackFunction(){
 				//bot.sendMessage(channel, "Example callback executed")	
 			//})
@@ -64,41 +64,41 @@ var commands = {
 		//description: "This is an example implementation of a command.",
 	//},
 	'!tweet': {
-		process: function(user, channel, server, tweet) {
-			if(checkRoloe(user, server, 'tweeter')){
-				twitter_bot.postTweet(twitter_client, user, tweet, function(success){
+		process: function(message, tweet) {
+			if(checkRoloe(message.author, message.server, 'tweeter')){
+				twitter_bot.postTweet(twitter_client, message.author, tweet, function(success){
 					if(success){
-						bot.sendMessage(channel, "Tweet posted!");
+						bot.sendMessage(message.channel, "Tweet posted!");
 					}else{
-						bot.sendMessage(channel, "Tweet failed to post :( !");
+						bot.sendMessage(message.channel, "Tweet failed to post :( !");
 					};
 				})
 			}else{
-				bot.sendMessage(channel, "You must have role 'tweeter' to post a tweet.")
+				bot.sendMessage(message.channel, "You must have role 'tweeter' to post a tweet.")
 			}
 		},
 		usage: "!tweet <tweet body>",
 		description: "Post a tweet from the twitter channel. You must have the role 'tweeter' to post a tweet"
 	},
 	'!ping': {
-		process: function(user, channel, server, argument){
-			bot.sendMessage(channel, "Hi there, " + user.name + "! :)");
-			console.log("Ping from " + user + " aka " + user.name);
+		process: function(message, argument){
+			bot.sendMessage(message.channel, "Hi there, " + message.author.name + "! :)");
+			console.log("Ping from " + message.author + " aka " + message.author.name);
 		},
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
 	},
 	'!pull': {
-		process: function(user, channel, server, argument){
-			if (checkRole(user, server, 'developer'){
+		process: function(message, argument){
+			if (checkRole(message.author, message.server, 'developer'){
 				child_process.exec('git pull', function(error, stdout, stderr){
 					if(error){
 						console.log(error);
-						bot.sendMessage(channel, 'error: ' + error);
+						bot.sendMessage(message.channel, 'error: ' + error);
 						return;
 					}
-					bot.sendMessage(channel, 'stdout: ' + stdout);
-					bot.sendMessage(channel, 'stderr: ' + stderr);
+					bot.sendMessage(message.channel, 'stdout: ' + stdout);
+					bot.sendMessage(message.channel, 'stderr: ' + stderr);
 				})
 			})
 		},
@@ -106,8 +106,8 @@ var commands = {
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
 	},
 	'!help': {
-		process: function(user, channel, server, argument) {
-			bot.sendMessage(user, "Available Commands: ", function() {
+		process: function(message, argument) {
+			bot.sendMessage(message.author, "Available Commands: ", function() {
 				for (var cmd in commands) {
 					var info = cmd;
 					var usage = commands[cmd].usage;
@@ -118,7 +118,7 @@ var commands = {
 					if(description){
 						info += "\n\t" + description;
 					}
-					bot.sendMessage(user,info);
+					bot.sendMessage(message.author,info);
 				}
 			})
 		},
@@ -126,7 +126,7 @@ var commands = {
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
-		process: function(user, channel, server, argument) {
+		process: function(message, argument) {
 			decider.rollDice(argument, function(result){
 				bot.sendMessage(channel, result)
 			})
@@ -159,7 +159,7 @@ bot.on('message', function(message){
 			console.log('command: ' + to_execute);
 			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
-				commands[to_execute].process(message.author, message.channel, message.server, argument)
+				commands[to_execute].process(message, argument)
 			}  else {
 				bot.sendMessage(message.channel, "Unknown Command :(");
 			}
