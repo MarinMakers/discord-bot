@@ -128,7 +128,7 @@ var commands = {
 	'!roll': {
 		process: function(message, argument) {
 			decider.rollDice(argument, function(result){
-				bot.sendMessage(channel, result)
+				bot.sendMessage(message.channel, result)
 			})
 		},
 		usage: "!roll <d20 syntax>",
