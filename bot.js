@@ -34,7 +34,7 @@ var twitter_client = new Twitter({
 //call checkRole(message.sender, message.server, 'role')
 var checkRole = function(user, server, role){
 	for (var i = 0; i < server.roles.length; i++){
-		if(server.roles[i] == role && message.author.hasRole(server.roles[i])){
+		if(server.roles[i] == role && user.hasRole(server.roles[i])){
 			return true
 		}
 	}
@@ -60,7 +60,7 @@ var commands = {
 	//},
 	'!tweet': {
 		process: function(message, tweet) {
-			if(checkRoloe(message.author, message.server, 'tweeter')){
+			if(checkRole(message.author, message.server, 'tweeter')){
 				twitter_bot.postTweet(twitter_client, message.author, tweet, function(success){
 					if(success){
 						bot.sendMessage(message.channel, "Tweet posted!");
