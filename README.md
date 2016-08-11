@@ -9,6 +9,7 @@ Clone this repo, navigate to it, and run `npm install` to install the dependenci
 - [x] Dice Rolling
 - [x] Posting tweets
 - [x] Help and Rules
+- [x] To Do List
 
 ###Planned Features
 - [ ] Last Seen
