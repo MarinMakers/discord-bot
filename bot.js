@@ -89,31 +89,32 @@ var commands = {
 	'!todo': {
 		//doing this NoSQL because yes.
 		process: function(message,argument) {
+			var listFile = JSON.parse(fs.readFileSync('./todo.json'));
+			var todoList = listFile.tasks.filter( function(task) {
+				return task.channel == message.channel.name;
+			});
 			if (argument.substring(0,3) == "add") {
 				// Add task
-				var listFile = fs.readFileSync("./todo.json");
-				var list = JSON.parse(listFile);
-				list.tasks.push({
+				listFile.tasks.push({
 					time:   message.timestamp, //This will not be read later, but again, yes.
 					user: message.sender.name,
 					task:   argument.substring(3,argument.length).trim(),
 					complete: false,
 					channel: message.channel.name
 				});
-				fs.writeFileSync('./todo.json',JSON.stringify(list));
+				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
 				bot.sendMessage(message.channel,"Task added " + message.author + "!");
 			}  else if (argument.substring(0,5) == "remove") {
 				// Remove task
 
 			}  else {
 				// View all tasks
-				var listFile = JSON.parse(fs.readFileSync('./todo.json'));
-				if (listFile.tasks.length == 0) {
-					bot.sendMessage(message.channel, "No tasks found. Add some with `!todo add <task>`");
+				if (todoList.length == 0) {
+					bot.sendMessage(message.channel, "No tasks found on this channel. Add some with `!todo add <task>`");
 				}  else {
 					var taskForm = "```diff\r! === " + message.channel.name + " To-do List ===\n";
-					for (task in listFile.tasks){
-						var singleTask = listFile.tasks[task]
+					for (task in todoList){
+						var singleTask = todoList[task];
 						if (singleTask.complete == true) {
 							taskForm += "+ ";
 						} else { 
