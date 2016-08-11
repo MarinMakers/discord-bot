@@ -20,11 +20,7 @@ try {
 	var todoList = require('./todo.json');
 } catch (e) {
 	console.log("To-do list not found, creating blank one.");
-	fs.open("./todo.json",'-ax', function(err,fd) {
-		if (err) {
-			console.log("some shit happened. You should try to ")
-		}
-	});
+	fs.writeFileSync("./todo.json", '{"tasks":[]}');
 }
 
 var bot = new Discord.Client();
@@ -96,27 +92,23 @@ var commands = {
 			if (argument.substring(0,3) == "add") {
 				var listFile = fs.readFileSync("./todo.json");
 				var list = JSON.parse(listFile);
-				list.push({
+				list.tasks.push({
 					time:   new Date(), //This will not be read later, but again, yes.
-					sender: message.sender.name,
-					task:   argument.substring(3,argument.length.trim())
+					user: message.sender.name,
+					task:   argument.substring(3,argument.length).trim()
 				});
 				fs.writeFileSync('./todo.json',JSON.stringify(list));
 				bot.sendMessage(message.channel, "Task added!");
 			}  else {
 
-				var listFile = fs.readFileSync("./todo.json");
-				if (listFile.length() == 0) {
-					//^ file datatype == string. If no entries, length will be 0;
-					bot.sendMessage(message.channel, "No tasks found.");
-				} else {
-					var list = JSON.parse(listFile);
-					var taskForm = "=To-do List=\n";
-					for (task in list) {
-						taskForm += "\t" + task.sender + ": " + task.task + "\n";
-					}
-					bot.sendMessage(message.channel,taskForm);
+				var listFile = require('./todo.json');
+				var taskForm = "=To-do List=\n";
+				for (task in listFile.tasks){
+					console.log(listFile.tasks[task]);
+					var task = listFile.tasks[task]
+					taskForm += "\t" + task['user'] + ": " + task['task'] + "\n";
 				}
+				bot.sendMessage(message.channel, taskForm);
 			}
 		},
 		usage: "!todo [add <string>]",
