@@ -19,13 +19,25 @@ try {
 	console.log("Auth file not found!");
 }
 
+var fs = require('fs');
+
+try {
+	var todoList = require('./todo.json');
+} catch (e) {
+	console.log("To-do list not found, creating blank one.");
+	fs.open("./todo.json",'-ax', function(err,fd) {
+		if (err) {
+			console.log("some shit happened. You should try to ")
+		}
+	});
+}
+
 var bot = new Discord.Client();
 
 var http = require('http');
 
 var Twitter = require('twitter');
 var child_process = require('child_process');
-
 var twitter_bot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 
@@ -38,6 +50,9 @@ var twitter_client = new Twitter({
 
 //call checkRole(message.sender, message.server, 'role')
 var checkRole = function(user, server, role){
+	// if (server.rolesOfUser(user).indexOf() == -1) {
+	// 	return true;
+	// }
 	for (var i = 0; i < server.roles.length; i++){
 		if(server.roles[i] == role && message.author.hasRole(server.roles[i])){
 			return true
@@ -65,7 +80,7 @@ var commands = {
 	//},
 	'!tweet': {
 		process: function(message, tweet) {
-			if(checkRoloe(message.author, message.server, 'tweeter')){
+			if(checkRole(message.author, message.server, 'tweeter')){
 				twitter_bot.postTweet(twitter_client, message.author, tweet, function(success){
 					if(success){
 						bot.sendMessage(message.channel, "Tweet posted!");
@@ -79,6 +94,38 @@ var commands = {
 		},
 		usage: "!tweet <tweet body>",
 		description: "Post a tweet from the twitter channel. You must have the role 'tweeter' to post a tweet"
+	},
+	'!todo': {
+		//doing this NoSQL because yes.
+		process: function(message,argument) {
+			if (argument.substring(0,3) == "add") {
+				var listFile = fs.readFileSync("./todo.json");
+				var list = JSON.parse(listFile);
+				list.push({
+					time:   new Date(), //This will not be read later, but again, yes.
+					sender: message.sender.name,
+					task:   argument.substring(3,argument.length.trim())
+				});
+				fs.writeFileSync('./todo.json',JSON.stringify(list));
+				bot.sendMessage(message.channel, "Task added!");
+			}  else {
+
+				var listFile = fs.readFileSync("./todo.json");
+				if (listFile.length() == 0) {
+					//^ file datatype == string. If no entries, length will be 0;
+					bot.sendMessage(message.channel, "No tasks found.");
+				} else {
+					var list = JSON.parse(listFile);
+					var taskForm = "=To-do List=\n";
+					for (task in list) {
+						taskForm += "\t" + task.sender + ": " + task.task + "\n";
+					}
+					bot.sendMessage(message.channel,taskForm);
+				}
+			}
+		},
+		usage: "!todo [add <string>]",
+		description: "Read the bot's to-do list, and write new entries"
 	},
 	'!ping': {
 		process: function(message, argument){
@@ -148,6 +195,9 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
+	if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
+		bot.sendMessage(message.channel,":banana:");
+	}
 	//if bot is mentioned
 	if (message.isMentioned(bot.user)) {
 		//Trim the mention from the message and any whitespace
