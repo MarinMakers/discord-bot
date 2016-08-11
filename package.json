@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nathanielknopf/discord-bot.git"
+    "url": "git+https://github.com/MarinMakers/discord-bot"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nathanielknopf/discord-bot/issues"
+    "url": "https://github.com/MarinMakers/discord-bot/issues"
   },
-  "homepage": "https://github.com/nathanielknopf/discord-bot#readme",
+  "homepage": "https://github.com/MarinMakers/discord-bot#readme",
   "dependencies": {
     "d20": "^1.4.0",
     "discord.js": "^8.1.0",
