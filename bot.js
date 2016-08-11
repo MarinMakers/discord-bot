@@ -1,10 +1,5 @@
 //This is the main script for the bot. To start the bot, run this script with node
-var port = 8080
-try {
-	var port = process.argv[2];
-} catch (e){
-	console.log("Port not given - defaulting to 8080");
-}
+var port = (process.argv[2]) ? process.argv[2] : 8080
 
 try {
 	var Discord = require("discord.js");
@@ -54,7 +49,7 @@ var checkRole = function(user, server, role){
 	// 	return true;
 	// }
 	for (var i = 0; i < server.roles.length; i++){
-		if(server.roles[i] == role && message.author.hasRole(server.roles[i])){
+		if(server.roles[i] == role && user.hasRole(server.roles[i])){
 			return true
 		}
 	}
@@ -137,7 +132,7 @@ var commands = {
 	},
 	'!pull': {
 		process: function(message, argument){
-			if (checkRole(message.author, message.server, 'developer'){
+			if (checkRole(message.author, message.server, 'developer')){
 				child_process.exec('git pull', function(error, stdout, stderr){
 					if(error){
 						console.log(error);
@@ -147,7 +142,7 @@ var commands = {
 					bot.sendMessage(message.channel, 'stdout: ' + stdout);
 					bot.sendMessage(message.channel, 'stderr: ' + stderr);
 				})
-			})
+			}
 		},
 		usage: "!pull",
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
@@ -175,7 +170,7 @@ var commands = {
 	'!roll': {
 		process: function(message, argument) {
 			decider.rollDice(argument, function(result){
-				bot.sendMessage(channel, result)
+				bot.sendMessage(message.channel, result)
 			})
 		},
 		usage: "!roll <d20 syntax>",
