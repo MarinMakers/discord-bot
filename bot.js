@@ -71,15 +71,15 @@ var commands = {
 	//},
 	'!tweet': {
 		process: function(message, tweet) {
-			if(checkRole(message.author, message.server, 'tweeter')){
+			if (checkRole(message.author, message.server, 'tweeter')){
 				twitter_bot.postTweet(twitter_client, message.author, tweet, function(success){
-					if(success){
+					if (success){
 						bot.sendMessage(message.channel, "Tweet posted!");
-					}else{
+					} else {
 						bot.sendMessage(message.channel, "Tweet failed to post :( !");
 					};
 				})
-			}else{
+			} else {
 				bot.sendMessage(message.channel, "You must have role 'tweeter' to post a tweet.")
 			}
 		},
@@ -100,15 +100,20 @@ var commands = {
 				fs.writeFileSync('./todo.json',JSON.stringify(list));
 				bot.sendMessage(message.channel, "Task added!");
 			}  else {
-
 				var listFile = require('./todo.json');
-				var taskForm = "=To-do List=\n";
-				for (task in listFile.tasks){
-					console.log(listFile.tasks[task]);
-					var task = listFile.tasks[task]
-					taskForm += "\t" + task['user'] + ": " + task['task'] + "\n";
+				if (listFile.tasks.length == 0) {
+					bot.sendMessage(message.channel, "No tasks found. Add some with `!todo add <task>`");
+				}  else {
+					var taskForm = "```===To-do List===\n";
+					for (task in listFile.tasks){
+						console.log(typeof(task));
+						console.log(listFile.tasks[task]);
+						var singleTask = listFile.tasks[task]
+						taskForm += (parseInt(task)+1).toString() + ".)\t" + singleTask['user'] + ": " + singleTask['task'] + "\n";
+					}
+					taskForm += "```";
+					bot.sendMessage(message.channel, taskForm);
 				}
-				bot.sendMessage(message.channel, taskForm);
 			}
 		},
 		usage: "!todo [add <string>]",
