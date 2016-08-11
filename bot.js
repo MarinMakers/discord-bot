@@ -138,6 +138,13 @@ var commands = {
 		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
 	},
+	'!tableflip' {
+		process: function(message,argument) {
+			bot.sendMessage(message.channel, "/tableflip");
+		},
+		usage: "!tableflip",
+		description: "Flip a table out of frustration."
+	},
 	'!pull': {
 		process: function(message, argument){
 			if (checkRole(message.author, message.server, 'developer')){
