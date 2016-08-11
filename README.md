@@ -21,9 +21,9 @@ Clone this repo, navigate to it, and run `npm install` to install the dependenci
 ###Augmenting the Bot
 To add features to the bot, store your feature in a .js file inside the nifty directory. Then, within bot.js, require the .js file, and add to the commands object as shown in the example object.
 
-Each command includes a process attribute, which defines a function that executes your code. The function defined within this attribute should take three parameters - the author of the message that triggered the command, the channel the command was sent in, and the rest of the message after the call to the command.
+Each command includes a process attribute, which defines a function that executes your code. The function defined within this attribute should take two parameters - the message object, and the "argument" which is the message text trailing the command.
 
-You should also build your code to accomodate for a callback function to do things like message the channel or otherwise use the results of your code. 
+You should also build your code to accomodate for a callback function to be passed as a parameter in order to do things like message the channel or otherwise use the results of your code. 
 
 ###Developers
 - [Nathaniel Knopf](https://github.com/nathanielknopf/)
