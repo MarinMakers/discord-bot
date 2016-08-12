@@ -61,7 +61,7 @@ var commands = {
 	//In general, one should design their functions to take a callback function as the last parameters, which
 	//is to be defined in this object. The callback can handle things like messaging the channel or users.
 	//'!example': {
-		//process: function(user, channel, message.server, message){
+		//process: function(message /*the message object*/, argument /*whatever follows a command (ex. 'hello' in !tweet hello)*/){
 			//my_package.myFunction(foo, bar, callbackFunction(){
 				//bot.sendMessage(channel, "Example callback executed")	
 			//})
