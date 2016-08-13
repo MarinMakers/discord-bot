@@ -66,7 +66,7 @@ var commands = {
 				//bot.sendMessage(channel, "Example callback executed")	
 			//})
 		//},
-		//usage: "!example <arguments>",
+		//usage: "<arguments>", // Do not make usage property if command does not need adtl arguments.
 		//description: "This is an example implementation of a command.",
 	//},
 	'!tweet': {
@@ -83,7 +83,7 @@ var commands = {
 				bot.sendMessage(message.channel, "You must have role 'tweeter' to post a tweet.")
 			}
 		},
-		usage: "!tweet <tweet body>",
+		usage: "<tweet body>",
 		description: "Post a tweet from the twitter channel. You must have the role 'tweeter' to post a tweet"
 	},
 	'!todo': {
@@ -152,7 +152,7 @@ var commands = {
 				}
 			}
 		},
-		usage: "!todo [add <string>] [remove <id>] [complete <id>]",
+		usage: "[add <string>] [remove <id>] [complete <id>]",
 		description: "Read the bot's to-do list, and write new entries"
 	},
 	'!ping': {
@@ -160,14 +160,12 @@ var commands = {
 			bot.sendMessage(message.channel, "Hi there, " + message.author.name + "! :)");
 			console.log("Ping from " + message.author + " aka " + message.author.name);
 		},
-		usage: "!ping",
 		description: "dumps info on the user to the console of the server."
 	},
 	'!tableflip': {
 		process: function(message,argument) {
 			bot.sendMessage(message.channel, "(╯°□°）╯︵ ┻━┻");
 		},
-		usage: "!tableflip",
 		description: "Flip a table out of frustration."
 	},
 	'!pull': {
@@ -184,7 +182,6 @@ var commands = {
 				})
 			}
 		},
-		usage: "!pull",
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
 	},
 	'!help': {
@@ -204,7 +201,6 @@ var commands = {
 				}
 			})
 		},
-		usage: "!help",
 		description: "PM's users a list of commands and invocation"
 	},
 	'!roll': {
@@ -213,7 +209,7 @@ var commands = {
 				bot.sendMessage(message.channel, result)
 			})
 		},
-		usage: "!roll <d20 syntax>",
+		usage: "<d20 syntax>",
 		description: "Roll dice using d20 syntax"
 	}
 }
