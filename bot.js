@@ -20,7 +20,7 @@ try {
 	var todoList = require('./todo.json');
 } catch (e) {
 	console.log("To-do list not found, creating blank one.");
-	fs.writeFileSync("./todo.json", '{"tasks":[]}');
+	fs.writeFileSync("./todo.json", '{"id":1,tasks":[]}');
 }
 
 var bot = new Discord.Client();
@@ -100,13 +100,15 @@ var commands = {
 					user: message.sender.name,
 					task:   argument.substring(3,argument.length).trim(),
 					complete: false,
-					channel: message.channel.name
+					channel: message.channel.name,
+					id: listFile.id
 				});
+				listFile = (parseInt(listFile.id)++).toString();
 				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
 				bot.sendMessage(message.channel,"Task added " + message.author + "!");
 			}  else if (argument.substring(0,5) == "remove") {
 				// Remove task
-
+				
 			}  else {
 				// View all tasks
 				if (todoList.length == 0) {
