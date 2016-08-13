@@ -20,7 +20,7 @@ try {
 	var todoList = require('./todo.json');
 } catch (e) {
 	console.log("To-do list not found, creating blank one.");
-	fs.writeFileSync("./todo.json", '{"id":1,tasks":[]}');
+	fs.writeFileSync("./todo.json", '{"id":1,"tasks":[]}');
 }
 
 var bot = new Discord.Client();
@@ -95,6 +95,7 @@ var commands = {
 			var todoList = listFile.tasks.filter( function(task) {
 				return task.channel == message.channel.name;
 			});
+
 			if (argument.substring(0,3) === "add") {
 				// Add task
 				listFile.tasks.push({
@@ -105,27 +106,28 @@ var commands = {
 					channel:  message.channel.name,
 					id:       listFile.id //This is going to be string datatype most of the time.
 				});
-				listFile = (parseInt(listFile.id)++).toString();
+				bot.sendMessage(message.channel, message.author+": Entry " + listFile.id +" added successfully!");
+				listFile.id = (listFile.id + 1);
 				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
-				bot.sendMessage(message.channel,"Task added " + message.author + "!");
 			}  else if (argument.split(" ")[0] === "remove") {
 				// Remove task
-				var removeId = argument.split(" ")[1];
-				for (task in listFile) {
-					if (listFile[task].id === removeId) {
-						listFile.splice(task,1);
-						bot.sendMessage(message.channel, "Entry " + removeId + " removed, " + message.author + ".")
+				var removeId = parseInt(argument.split(" ")[1]);
+				for (task in listFile.tasks) {
+					var singleTask = listFile.tasks[task];
+					if (singleTask.id === removeId) {
+						listFile.tasks.splice(task,1);
+						bot.sendMessage(message.channel, message.author + ": Entry " + removeId + " removed successfully!");
 						break;
 					}
 				}
 				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
 			}  else if (argument.split(" ")[0] === "complete") {
 				// Complete task
-				var completeId = argument.split(" ")[1];
-				for (task in listFile) {
-					if (listFile[task].id === completeId) {
-						listFile[task].complete = true;
-						bot.sendMessage(message.channel, "Entry " + completeId + " has been completed! Woo!!");
+				var completeId = parseInt(argument.split(" ")[1]);
+				for (task in listFile.tasks) {
+					if (listFile.tasks[task].id === completeId) {
+						listFile.tasks[task].complete = true;
+						bot.sendMessage(message.channel, message.author +": Entry " + completeId + " has been completed! Woo!!");
 						break;
 					}
 				}
