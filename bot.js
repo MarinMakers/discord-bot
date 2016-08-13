@@ -140,7 +140,7 @@ var commands = {
 	},
 	'!tableflip': {
 		process: function(message,argument) {
-			bot.sendMessage(message.channel, "/tableflip");
+			bot.sendMessage(message.channel, "/tableflip ");
 		},
 		usage: "!tableflip",
 		description: "Flip a table out of frustration."
