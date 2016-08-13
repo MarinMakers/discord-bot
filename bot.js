@@ -89,26 +89,47 @@ var commands = {
 	'!todo': {
 		//doing this NoSQL because yes.
 		process: function(message,argument) {
+			// V JSON file imported and parsed
 			var listFile = JSON.parse(fs.readFileSync('./todo.json'));
+			// V New array created out of tasks created in the channel message was sent from
 			var todoList = listFile.tasks.filter( function(task) {
 				return task.channel == message.channel.name;
 			});
-			if (argument.substring(0,3) == "add") {
+			if (argument.substring(0,3) === "add") {
 				// Add task
 				listFile.tasks.push({
-					time:   message.timestamp, //This will not be read later, but again, yes.
-					user: message.sender.name,
-					task:   argument.substring(3,argument.length).trim(),
+					time:     message.timestamp, //This will not be read later, but again, yes.
+					user:     message.sender.name,
+					task:     argument.substring(3,argument.length).trim(),
 					complete: false,
-					channel: message.channel.name,
-					id: listFile.id
+					channel:  message.channel.name,
+					id:       listFile.id //This is going to be string datatype most of the time.
 				});
 				listFile = (parseInt(listFile.id)++).toString();
 				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
 				bot.sendMessage(message.channel,"Task added " + message.author + "!");
-			}  else if (argument.substring(0,5) == "remove") {
+			}  else if (argument.split(" ")[0] === "remove") {
 				// Remove task
-				
+				var removeId = argument.split(" ")[1];
+				for (task in listFile) {
+					if (listFile[task].id === removeId) {
+						listFile.splice(task,1);
+						bot.sendMessage(message.channel, "Entry " + removeId + " removed, " + message.author + ".")
+						break;
+					}
+				}
+				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
+			}  else if (argument.split(" ")[0] === "complete") {
+				// Complete task
+				var completeId = argument.split(" ")[1];
+				for (task in listFile) {
+					if (listFile[task].id === completeId) {
+						listFile[task].complete = true;
+						bot.sendMessage(message.channel, "Entry " + completeId + " has been completed! Woo!!");
+						break;
+					}
+				}
+				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
 			}  else {
 				// View all tasks
 				if (todoList.length == 0) {
@@ -118,18 +139,20 @@ var commands = {
 					for (task in todoList){
 						var singleTask = todoList[task];
 						if (singleTask.complete == true) {
+							//green syntax highlighting
 							taskForm += "+ ";
 						} else { 
+							//grey syntax highlighting
 							taskForm += "  ";
 						};
-						taskForm += (parseInt(task)+1).toString() + ".) " + singleTask['user'] + ": " + singleTask['task'] + "\n";
+						taskForm += singleTask.id + ".) " + singleTask['user'] + ": " + singleTask['task'] + "\n";
 					}
 					taskForm += "```";
 					bot.sendMessage(message.channel, taskForm);
 				}
 			}
 		},
-		usage: "!todo [add <string>]",
+		usage: "!todo [add <string>] [remove <id>] [complete <id>]",
 		description: "Read the bot's to-do list, and write new entries"
 	},
 	'!ping': {
