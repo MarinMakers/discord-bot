@@ -211,6 +211,17 @@ var commands = {
 		},
 		usage: "<d20 syntax>",
 		description: "Roll dice using d20 syntax"
+	},
+	'!kill': {
+		process: function(message, argument) {
+			if (checkRole(message.author, message.server, 'developer') || checkRole(message.author, message.server, 'Admin')) {
+				bot.sendMessage(message.channel, "Beep boop, powering down.");
+				process.exit();
+			}  else {
+				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
+			}
+		},
+		description: "This kills the robot. Must have proper privileges to execute."
 	}
 }
 
