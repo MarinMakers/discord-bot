@@ -38,10 +38,13 @@ Each Command will have 3 properties: `process`, `usage` and `description`.
 Each command includes a `process` property, which contains the function executed by the command. This should take two parameters - the `message` object, and `argument`, which is any text trailing the command.
 
 ####Usage
-Next is the `usage` property. This should be a string listing all possible arguments in your command. __If your command does not require any additional arguments, do not create a usage property__.
+Next is the `usage` property. This should be a string listing all possible arguments in your command. 
+
+__If your command does not require any additional arguments, do not create a usage property__.
 
 ####Description
-And finally, a `description` property, which explains what the code does. 
+And finally, a `description` property which is just a plaintext explaination of what the command does. 
+
 Be sure to describe what every possible instance of `usage` does in order of appearance, and keep it brief.
 
 ###Developers
