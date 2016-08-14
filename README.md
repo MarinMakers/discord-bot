@@ -28,8 +28,8 @@ To deploy the bot, clone this repo, navigate to it, run `npm install` to install
 ###Contributing to the Bot
 To add commands to the bot:
 
-1. Create your command in a .js file in the directory `/nifty` as a [module ](https://www.sitepoint.com/understanding-module-exports-exports-node-js/)
-2. Require the .js file using a relative link and with an appropriate variable name.
+1. Create your command in a .js file in the directory `/nifty` as a [module ](https://www.sitepoint.com/understanding-module-exports-exports-node-js/).
+2. In bot.js, require the .js file with an appropriate variable name.
 3. Add to the `commands` object as shown in the example object.
 
 Each Command will have 3 properties: `process`, `usage` and `description`.
