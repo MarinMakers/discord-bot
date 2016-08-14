@@ -6,6 +6,9 @@ A bot for the Marin Makers' Discord Server written with [discord.js](https://www
 + [Current Features](https://github.com/MarinMakers/discord-bot/blob/master/README.md#current-features)
 + [Planned Features](https://github.com/MarinMakers/discord-bot/blob/master/README.md#planned-features)
 + [Contributing to the Bot](https://github.com/MarinMakers/discord-bot/blob/master/README.md#contributing-to-the-bot)
+  - [Process](https://github.com/MarinMakers/discord-bot/blob/master/README.md#process)
+  - [Usage](https://github.com/MarinMakers/discord-bot/blob/master/README.md#usage)
+  - [Description](https://github.com/MarinMakers/discord-bot/blob/master/README.md#description)
 + [Developers](https://github.com/MarinMakers/discord-bot/blob/master/README.md#developers)
 
 ###Deployment
@@ -28,7 +31,7 @@ To deploy the bot, clone this repo, navigate to it, run `npm install` to install
 ###Contributing to the Bot
 To add commands to the bot:
 
-1. Create your command in a .js file in the directory `/nifty` as a [module ](https://www.sitepoint.com/understanding-module-exports-exports-node-js/).
+1. Create your command in a .js file in the directory `/nifty` as a [module](https://www.sitepoint.com/understanding-module-exports-exports-node-js/).
 2. In bot.js, require the .js file with an appropriate variable name.
 3. Add to the `commands` object as shown in the example object.
 
