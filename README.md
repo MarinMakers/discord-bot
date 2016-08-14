@@ -1,8 +1,15 @@
 #Discord Bot for Marin Makers' Discord Server
 A bot for the Marin Makers' Discord Server written with [discord.js](https://www.npmjs.com/package/discord.js).
 
-###How to Run the Bot
-Clone this repo, navigate to it, and run `npm install` to install the dependencies. Then, run the bot with the command `node bot.js port`. If you drop the port term, the http server will default to port 8080.
+## Table of Contents
++ [Deployment](https://github.com/MarinMakers/discord-bot/blob/master/README.md#deployment)
++ [Current Features](https://github.com/MarinMakers/discord-bot/blob/master/README.md#current-features)
++ [Planned Features](https://github.com/MarinMakers/discord-bot/blob/master/README.md#planned-features)
++ [Contributing to the Bot](https://github.com/MarinMakers/discord-bot/blob/master/README.md#contributing-to-the-bot)
++ [Developers](https://github.com/MarinMakers/discord-bot/blob/master/README.md#developers)
+
+###Deployment
+To deploy the bot, clone this repo, navigate to it, run `npm install` to install all dependencies, and run `node bot.js`.
 
 ![Bot](http://i68.tinypic.com/10hr2tk.png)
 ###Current Features
@@ -18,16 +25,28 @@ Clone this repo, navigate to it, and run `npm install` to install the dependenci
 - [ ] Webpage for configuring bot
 - [ ] Interacting with forthcoming Marin Makers Webpage from discord
 
-###Augmenting the Bot
-To add features to the bot, store your feature in a .js file inside the nifty directory. Then, within bot.js, require the .js file, and add to the commands object as shown in the example object.
+###Contributing to the Bot
+To add commands to the bot:
 
-Each command includes a process attribute, which defines a function that executes your code. The function defined within this attribute should take two parameters - the message object, and the "argument" which is the message text trailing the command.
+1. Create your command in a .js file in the directory `/nifty` as a [module ](https://www.sitepoint.com/understanding-module-exports-exports-node-js/)
+2. Require the .js file using a relative link and with an appropriate variable name.
+3. Add to the `commands` object as shown in the example object.
 
-You should also build your code to accomodate for a callback function to be passed as a parameter in order to do things like message the channel or otherwise use the results of your code. 
+Each Command will have 3 properties: `process`, `usage` and `description`.
+
+####Process
+Each command includes a `process` property, which contains the function executed by the command. This should take two parameters - the `message` object, and `argument`, which is any text trailing the command.
+
+####Usage
+Next is the `usage` property. This should be a string listing all possible arguments in your command. __If your command does not require any additional arguments, do not create a usage property__.
+
+####Description
+And finally, a `description` property, which explains what the code does. 
+Be sure to describe what every possible instance of `usage` does in order of appearance, and keep it brief.
 
 ###Developers
-- [Nathaniel Knopf](https://github.com/nathanielknopf/)
-- [Stephen Rivest](https://github.com/Magicsteve46/)
-- [Morgaine Mandigo-Stoba](https://github.com/mmandigostoba)
+- [Nathaniel Knopf](https://github.com/nathanielknopf)
 - [Miles Florence](https://github.com/milesflo)
+- [Stephen Rivest](https://github.com/Magicsteve46)
+- [Morgaine Mandigo-Stoba](https://github.com/mmandigostoba)
 - [Sean Dow](https://github.com/bobthepally)
