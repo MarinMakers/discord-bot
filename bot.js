@@ -45,7 +45,7 @@ var checkRole = function(user, server, role){
 	// 	return true;
 	// }
 	for (var i = 0; i < server.roles.length; i++){
-		if(server.roles[i] == role && user.hasRole(server.roles[i])){
+		if(server.roles[i].name == role && user.hasRole(server.roles[i])){
 			return true
 		}
 	}
@@ -182,7 +182,9 @@ var commands = {
 					bot.sendMessage(message.channel, 'stdout: ' + stdout);
 					bot.sendMessage(message.channel, 'stderr: ' + stderr);
 				})
-			}
+			}else{
+				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
+			};
 		},
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
 	},
