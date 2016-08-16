@@ -19,14 +19,14 @@ To deploy the bot, clone this repo, navigate to it, run `npm install` to install
 - [x] Dice Rolling
 - [x] Posting tweets
 - [x] Help and Rules
-- [x] To Do List
+- [x] To-Do List/Tracking
+- [x] Last Seen
 
 ###Planned Features
-- [ ] Last Seen
 - [ ] Polls/Voting
-- [ ] Query WolframAlpha, other search engines
-- [ ] Webpage for configuring bot
-- [ ] Interacting with forthcoming Marin Makers Webpage from discord
+- [ ] News Summary
+- [ ] Query search engines
+- [ ] Marin Makers Website
 
 ###Contributing to the Bot
 To add commands to the bot:
