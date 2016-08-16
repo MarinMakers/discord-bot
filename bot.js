@@ -19,7 +19,7 @@ var fs = require('fs');
 try {
 	var todoList = require('./todo.json');
 } catch (e) {
-	console.log("To-do list not found, creating blank one.");
+	console.log("To-do list not found - creating blank one.");
 	fs.writeFileSync("./todo.json", '{"id":1,"tasks":[]}');
 }
 
@@ -31,19 +31,14 @@ var Twitter = require('twitter');
 var child_process = require('child_process');
 var twitter_bot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
+var gitHelper = require('./nifty/git.js');
+var lastSeen = require('./nifty/lastseen.js');
 
-var twitter_client = new Twitter({
-	consumer_key: discord_auth.twitter.consumer_key,
-	consumer_secret: discord_auth.twitter.consumer_secret,
-	access_token_key: discord_auth.twitter.access_token_key,
-	access_token_secret: discord_auth.twitter.access_token_secret
-})
+//initialize the twitter_client variable, but don't give it a value
+var twitter_client;
 
 //call checkRole(message.sender, message.server, 'role')
 var checkRole = function(user, server, role){
-	// if (server.rolesOfUser(user).indexOf() == -1) {
-	// 	return true;
-	// }
 	for (var i = 0; i < server.roles.length; i++){
 		if(server.roles[i].name == role && user.hasRole(server.roles[i])){
 			return true
@@ -69,16 +64,38 @@ var commands = {
 		//usage: "<arguments>", // Do not make usage property if command does not need adtl arguments.
 		//description: "This is an example implementation of a command.",
 	//},
+	'!lastseen': {
+		process: function(message, argument){
+			lastSeen.lookup(argument, function(msg){
+				bot.sendMessage(message.channel, msg);
+			})
+		},
+		usage: "<username>",
+		description: "Tells you the last time a user sent a message on discord, what they said, and where they said it."
+	},
 	'!tweet': {
 		process: function(message, tweet) {
 			if (checkRole(message.author, message.server, 'tweeter')){
-				twitter_bot.postTweet(twitter_client, message.author, tweet, function(success){
-					if (success){
-						bot.sendMessage(message.channel, "Tweet posted!");
-					} else {
-						bot.sendMessage(message.channel, "Tweet failed to post :( !");
-					};
-				})
+
+				var successFunction = function(success){
+					var messageBody = (success) ? "Tweet posted!" : "Tweet failed to post :(";
+					bot.sendMessage(message.channel, messageBody);
+				}
+
+				if(twitter_client){
+					twitter_bot.postTweet(twitter_client, message.author, tweet, successFunction);
+				}else{
+					bot.sendMessage(message.channel, "Twitter client uninitialized -- initializing now...");
+
+					twitter_client = new Twitter({
+						consumer_key: discord_auth.twitter.consumer_key,
+						consumer_secret: discord_auth.twitter.consumer_secret,
+						access_token_key: discord_auth.twitter.access_token_key,
+						access_token_secret: discord_auth.twitter.access_token_secret
+					});
+
+					twitter_bot.postTweet(twitter_client, message.author, tweet, successFunction);
+				}
 			} else {
 				bot.sendMessage(message.channel, "You must have role 'tweeter' to post a tweet.")
 			}
@@ -159,8 +176,8 @@ var commands = {
 	},
 	'!ping': {
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "Hi there, " + message.author.name + "! :)");
-			console.log("Ping from " + message.author + " aka " + message.author.name);
+			bot.sendMessage(message.channel, "Eat a banana, " + message.author.name);
+			console.log("Ping from " + message.author + " aka " + message.author.username);
 		},
 		description: "dumps info on the user to the console of the server."
 	},
@@ -173,18 +190,12 @@ var commands = {
 	'!pull': {
 		process: function(message, argument){
 			if (checkRole(message.author, message.server, 'developer')){
-				child_process.exec('git pull', function(error, stdout, stderr){
-					if(error){
-						console.log(error);
-						bot.sendMessage(message.channel, 'error: ' + error);
-						return;
-					}
-					bot.sendMessage(message.channel, 'stdout: ' + stdout);
-					bot.sendMessage(message.channel, 'stderr: ' + stderr);
+				gitHelper.pull(function(msg){
+					bot.sendMessage(message.channel, msg);
 				})
 			}else{
 				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
-			};
+			}
 		},
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
 	},
@@ -241,6 +252,9 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
+
+	lastSeen.learn(message);
+
 	if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
 		bot.sendMessage(message.channel,":banana:");
 	}
