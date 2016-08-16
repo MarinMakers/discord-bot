@@ -28,7 +28,6 @@ var learn = function(message){
 		"channel":message.channel.name,
 		"message":message.cleanContent
 	};
-	console.log(lastSeenFile)
 	remember();
 }
 
