@@ -1,5 +1,9 @@
+# Node/OS related stuff
 .DS_Store
 node_modules
-lastseen.json
+
+# Auth file for tokens
 auth.json
+
+# All persisted data should live in this folder, ex. todo.json
 db/
