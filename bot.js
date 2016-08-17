@@ -159,7 +159,7 @@ var commands = {
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
 			}  else if (method === "remove") {
 				// Remove task
-				var idArr = argument.split(" ")[1].split(",").map(function(num) {return parseInt(num)});
+				var idArr = argument.split(" ")[1].split(",").map(function(num) {return parseInt(num.trim())});
 
 				for (id in idArr) {
 					for (task in listFile.tasks) {
