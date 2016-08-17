@@ -17,10 +17,11 @@ To deploy the bot, clone this repo, navigate to it, run `npm install` to install
 ![Bot](http://i68.tinypic.com/10hr2tk.png)
 ###Current Features
 - [x] Dice Rolling
-- [x] Posting tweets
+- [x] Twitter posting, searching, viewing trends
 - [x] Help and Rules
 - [x] To-Do List/Tracking
 - [x] Last Seen
+- [x] Banana eating, lenny, and coding advice
 
 ###Planned Features
 - [ ] Polls/Voting
@@ -38,7 +39,16 @@ To add commands to the bot:
 Each Command will have 3 properties: `process`, `usage` and `description`.
 
 ####Process
-Each command includes a `process` property, which contains the function executed by the command. This should take two parameters - the `message` object, and `argument`, which is any text trailing the command.
+Each command includes a `process` property, which contains the function executed by the command. This should take two parameters - the `message` object, and `argument`, which is any text trailing the command. 
+
+#####Some Terminology
+For commands, it can be useful to have multiple functions in your module stored under the same `process` (such as how `!twitter tweet`, `!twitter search`, and `!twitter trending` are all handled by one command object). 
+
+In general, commands can be designed like this:`!command method parameters`
+
+Methods are the sub-commands that call different functions in your module, and should be one word long. They can be pulled from the argument parameter fed to the `process` property with `getMethod(argument)`.
+
+Parameters are any additional text that you want to feed to your methods. They can be of any length, and can be pulled from the argument parameter fed to the `process` property with `getParameter(argument)`.
 
 ####Usage
 Next is the `usage` property. This should be a string listing all possible arguments in your command. 
