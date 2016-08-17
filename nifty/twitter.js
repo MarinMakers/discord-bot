@@ -65,8 +65,13 @@ var search = function(twitterClient, query, messageFunction){
 				messageFunction("Error searching Twitter for " + query + ".");
 			}
 			var tweets = tweets.statuses;
-			for(var i = 0; i < 5; i++){
-				messageFunction('Tweet: " ' + tweets[i].text + ' ", by: ' + tweets[i].user.screen_name)
+			if(tweets.length > 0){
+				var max = (tweets.length >= 5) ? 5 : tweets.length;
+				for(var i = 0; i < max; i++){
+					messageFunction('Tweet: ' + tweets[i].text + ' ", by: ' + tweets[i].user.screen_name);
+				}
+			}else{
+				messageFunction("No tweets found matching your search for " + query);
 			}
 		})
 	}else{

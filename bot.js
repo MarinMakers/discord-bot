@@ -33,7 +33,7 @@ var twitterBot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 var gitHelper = require('./nifty/git.js');
 var lastSeen = require('./nifty/lastseen.js');
-var pastebin = require('./nifty/pastebin.js');
+// var pastebin = require('./nifty/pastebin.js');
 
 //initialize the twitterClient variable, but don't give it a value
 var twitterClient;
@@ -80,7 +80,7 @@ var commands = {
 	//},
 	'!howtocode':{
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit.\n3. Everything is a callback.")
+			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. Everything gets console.log'd.\n3. Eat a banana.")
 		},
 		description: "Passes on our wisdom."
 	},
@@ -149,7 +149,7 @@ var commands = {
 				listFile.tasks.push({
 					time:     message.timestamp, //This will not be read later, but again, yes.
 					user:     message.sender.name,
-					task:     getPrameter(argument),
+					task:     getParameter(argument),
 					complete: false,
 					channel:  message.channel.name,
 					id:       listFile.id //This is going to be string datatype most of the time.
