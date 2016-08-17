@@ -253,8 +253,10 @@ var commands = {
 	'!kill': {
 		process: function(message, argument) {
 			if (checkRole(message.author, message.server, 'developer') || checkRole(message.author, message.server, 'Admin')) {
-				bot.sendMessage(message.channel, "Beep boop, powering down.");
-				process.exit();
+				console.log("Being shut down by " + message.author.username);
+				bot.sendMessage(message.channel, "Beep boop, powering down.").then(function() {
+					process.exit();
+				});
 			}  else {
 				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
 			}
