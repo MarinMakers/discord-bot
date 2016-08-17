@@ -255,8 +255,10 @@ var commands = {
 		process: function(message, argument) {
 			if (checkRole(message.author, message.server, 'developer') || checkRole(message.author, message.server, 'Admin')) {
 				bot.sendMessage(message.channel, "Beep boop, powering down.");
-				process.exit();
-			}  else {
+				setTimeout(function(){
+					process.exit();
+				}, 1000);
+			} else {
 				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
 			}
 		},
