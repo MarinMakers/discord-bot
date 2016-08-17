@@ -1,13 +1,37 @@
 var Twitter = require('twitter');
 
+var getTime = function(){
+	var date = new Date();
+	return Date.getTime();
+}
+
+var getTimestamp = function(time){
+	var date = new Date(time);
+	var timestampReadable = (date.getMonth()+1).toString() + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+	return timestampReadable;
+}
+
 try {
 	var discord_auth = require('../auth.json');
 } catch (e) {
 	console.log("Auth file not found!");
 }
 
+try {
+	var trendingFile = JSON.parse(fs.readFileSync('./db/trending.json'));
+}catch (e){
+	console.log("Initializing trending.json...");
+	var toWrite = {
+		"time": getTime(),
+		"length": 0
+	}
+	fs.writeFileSync('./db/trending.json', JSON.stringify(trendingFile));
+	trendingFile = JSON.parse(fs.readFileSync('./db/trending.json'));
+}
+
+
 var initialize = function(messageFunction){
-	var twitter_client = new Twitter({
+	var twitterClient = new Twitter({
 		consumer_key: discord_auth.twitter.consumer_key,
 		consumer_secret: discord_auth.twitter.consumer_secret,
 		access_token_key: discord_auth.twitter.access_token_key,
@@ -15,12 +39,12 @@ var initialize = function(messageFunction){
 	});
 
 	messageFunction("Initialized! Fire at will, captain.");
-	return twitter_client;
+	return twitterClient;
 }
 
-var postTweet = function(twitter_client, tweet, messageFunction){
-	if(twitter_client){
-		twitter_client.post('statuses/update', {status: tweet}, function(error, tweet, response){
+var postTweet = function(twitterClient, tweet, messageFunction){
+	if(twitterClient){
+		twitterClient.post('statuses/update', {status: tweet}, function(error, tweet, response){
 			if(error){
 				console.log('error: ' + error);
 				messageFunction("Error posting tweet...");
@@ -55,21 +79,40 @@ var search = function(twitterClient, query, messageFunction){
 
 var getTrending = function(twitterClient, messageFunction){
 	if(twitterClient){
-		twitterClient.get('trends/place', {id: 1}, function(error, tweets, response){
-			if(error){
-				console.log('error :' + error);
-				messageFunction("Error pulling trends :/");
-			}
-			var trends = tweets[0].trends;
-			for(var i = 0; i < trends.length; i++){
-				console.log(trends[i].name);
-			}
-			console.log(tweets[0].trends[0]);
-			messageFunction("console.log'd");
-		})
+		if(goodToPull){
+			twitterClient.get('trends/place', {id: 1}, function(error, tweets, response){
+				if(error){
+					console.log(error);
+					messageFunction("Error pulling trends...");
+				};
+				trendingFile.time = getTime();
+				var trends = tweets[0].trends;
+				trendingFile.length = trends.length;
+				for(var i = 0; i < trends.length; i++){
+					trendingFile[i].trend = trends[i];
+				}
+				messageFunction("Pulled new trending subjects");
+				sendTrending(messageFunction);
+				saveTrending();
+			})
+		}else{
+			messageFunction("Showing trending subjects from " + getTimestamp(trendingFile.time));
+			sendTrending(messageFunction);
+		}
 	}else{
 		messageFunction("You must run '!twitter initialize' before you can track trends on twitter!")
 	}
+}
+
+var sendTrending = function(messageFunction){
+	messageFunction("Trending on twitter right now:");
+	for(var i = 0; i < trendingFile.length; i++){
+		messageFunction(trendingFile[i].trend.name);
+	}
+}
+
+var saveTrending = function(){
+	fs.writeFile('./db/trending.json', JSON.stringify(trendingFile));
 }
 
 module.exports = {
