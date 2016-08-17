@@ -1,8 +1,9 @@
 var Twitter = require('twitter');
+var fs = require('fs');
 
 var getTime = function(){
 	var date = new Date();
-	return Date.getTime();
+	return date.getTime();
 }
 
 var getTimestamp = function(time){
@@ -21,11 +22,7 @@ try {
 	var trendingFile = JSON.parse(fs.readFileSync('./db/trending.json'));
 }catch (e){
 	console.log("Initializing trending.json...");
-	var toWrite = {
-		"time": getTime(),
-		"length": 0
-	}
-	fs.writeFileSync('./db/trending.json', JSON.stringify(trendingFile));
+	fs.writeFileSync('./db/trending.json', '{"time":"new","length":0}');
 	trendingFile = JSON.parse(fs.readFileSync('./db/trending.json'));
 }
 
@@ -79,8 +76,9 @@ var search = function(twitterClient, query, messageFunction){
 
 var getTrending = function(twitterClient, messageFunction){
 	if(twitterClient){
-		if(goodToPull){
-			twitterClient.get('trends/place', {id: 1}, function(error, tweets, response){
+		if(trendingFile.time == "new" || getTime() - trendingFile.time >= 900000){
+			console.log('pulling');
+			twitterClient.get('trends/place', {id: 23424977}, function(error, tweets, response){
 				if(error){
 					console.log(error);
 					messageFunction("Error pulling trends...");
@@ -89,11 +87,12 @@ var getTrending = function(twitterClient, messageFunction){
 				var trends = tweets[0].trends;
 				trendingFile.length = trends.length;
 				for(var i = 0; i < trends.length; i++){
-					trendingFile[i].trend = trends[i];
+					console.log(trends[i])
+					trendingFile[i] = trends[i];
 				}
 				messageFunction("Pulled new trending subjects");
 				sendTrending(messageFunction);
-				saveTrending();
+				fs.writeFile('./db/trending.json', JSON.stringify(trendingFile));
 			})
 		}else{
 			messageFunction("Showing trending subjects from " + getTimestamp(trendingFile.time));
@@ -105,14 +104,12 @@ var getTrending = function(twitterClient, messageFunction){
 }
 
 var sendTrending = function(messageFunction){
-	messageFunction("Trending on twitter right now:");
+	var trendingString = 'Trending on Twitter right now: '
 	for(var i = 0; i < trendingFile.length; i++){
-		messageFunction(trendingFile[i].trend.name);
+		trendingString += trendingFile[i].name + ', '
 	}
-}
-
-var saveTrending = function(){
-	fs.writeFile('./db/trending.json', JSON.stringify(trendingFile));
+	console.log(trendingString);
+	messageFunction(trendingString);
 }
 
 module.exports = {
