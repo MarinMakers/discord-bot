@@ -14,16 +14,18 @@ var getTimestamp = function(message){
 	return timestampReadable;
 }
 
-var lookup = function(username, messageFunction){
-	if(lastSeenFile[username]){
-		messageFunction("I last saw " + username + " at " + lastSeenFile[username].time + " on " + lastSeenFile[username].channel + ", saying '" + lastSeenFile[username].message + "'.");
+var lookup = function(name, messageFunction){
+	if(lastSeenFile[name]){
+		messageFunction("I last saw " + name + " at " + lastSeenFile[name].time + " on " + lastSeenFile[name].channel + ", saying '" + lastSeenFile[name].message + "'.");
 	}else{
-		messageFunction("Sorry, I don't have any information on that user yet :(")
-	}
+		messageFunction("Sorry, I don't have any information on that user!\nI store data by nickname (or by username if someone doesn't have a nickname) so make sure you're using the right name! :)");
+	};
 }
 
 var learn = function(message){
-	lastSeenFile[message.author.username] = {
+	//store by nickname if user has one, else by username
+	var username = (message.server.memberMap[message.author.id].nick) ? message.server.memberMap[message.author.id].nick : message.author.username;
+	lastSeenFile[username] = {
 		"time":getTimestamp(message),
 		"channel":message.channel.name,
 		"message":message.cleanContent
@@ -33,7 +35,11 @@ var learn = function(message){
 
 var remember = function(){
 	//write loaded lastSeenFile to lastseen.json
-	fs.writeFile('./lastseen.json', JSON.stringify(lastSeenFile));
+	fs.writeFile('./lastseen.json', JSON.stringify(lastSeenFile), function(err){
+		if(err){
+			console.log('error writing lastseen.json: ' + err);
+		}
+	});
 }
 
 module.exports = {

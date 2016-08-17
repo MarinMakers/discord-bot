@@ -29,13 +29,13 @@ var http = require('http');
 
 var Twitter = require('twitter');
 var child_process = require('child_process');
-var twitter_bot = require('./nifty/twitter.js');
+var twitterBot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 var gitHelper = require('./nifty/git.js');
 var lastSeen = require('./nifty/lastseen.js');
 
-//initialize the twitter_client variable, but don't give it a value
-var twitter_client;
+//initialize the twitterClient variable, but don't give it a value
+var twitterClient;
 
 //call checkRole(message.sender, message.server, 'role')
 var checkRole = function(user, server, role){
@@ -45,6 +45,18 @@ var checkRole = function(user, server, role){
 		}
 	}
 	return false
+}
+
+var getMethod = function(argument){
+	if(argument.indexOf(' ') >= 0){
+		return argument.substring(0, argument.indexOf(' '));
+	}else{
+		return argument;
+	}
+}
+
+var getParameter = function(argument){
+	return argument.substring(argument.indexOf(' ')+1, argument.length);
 }
 
 var commands = {
@@ -73,35 +85,44 @@ var commands = {
 		usage: "<username>",
 		description: "Tells you the last time a user sent a message on discord, what they said, and where they said it."
 	},
-	'!tweet': {
-		process: function(message, tweet) {
-			if (checkRole(message.author, message.server, 'tweeter')){
+	'!twitter': {
+		process: function(message, argument) {	
 
-				var successFunction = function(success){
-					var messageBody = (success) ? "Tweet posted!" : "Tweet failed to post :(";
-					bot.sendMessage(message.channel, messageBody);
-				}
-
-				if(twitter_client){
-					twitter_bot.postTweet(twitter_client, message.author, tweet, successFunction);
-				}else{
-					bot.sendMessage(message.channel, "Twitter client uninitialized -- initializing now...");
-
-					twitter_client = new Twitter({
-						consumer_key: discord_auth.twitter.consumer_key,
-						consumer_secret: discord_auth.twitter.consumer_secret,
-						access_token_key: discord_auth.twitter.access_token_key,
-						access_token_secret: discord_auth.twitter.access_token_secret
-					});
-
-					twitter_bot.postTweet(twitter_client, message.author, tweet, successFunction);
-				}
-			} else {
-				bot.sendMessage(message.channel, "You must have role 'tweeter' to post a tweet.")
+			var messageFunction = function(msg){
+				bot.sendMessage(message.channel, msg);
 			}
+
+			var method = getMethod(argument);
+
+			if (method === "initialize"){
+				if (checkRole(message.author, message.server, 'developer')){
+					twitterClient = twitterBot.initialize(messageFunction);
+				}else{
+					messageFunction("Sorry, you must have the role 'developer' to start up my twitter functions.");
+				}
+			}else if (method === "tweet"){
+				var tweet = getParameter(argument);
+				if (checkRole(message.author, message.server, 'tweeter')){
+					twitterClient = twitterBot.postTweet(twitterClient, tweet, messageFunction);
+				} else {
+					messageFunction("Sorry, you must have the role 'tweeter' to post a tweet to @MarinMakers. Talk to an admin for permissions.")
+				}
+			}else if (method === "trending"){
+				//get trending tweets
+				// twitterClient = twitterBot.getTrending(twitterClient, messageFunction);
+				messageFunction("This will eventually get trending tweets from twitter");
+			}else if (method === "search"){
+				//search twitter for the remainder of the argument
+				var query = argument.substring(6, argument.length).trim();
+				console.log("twitter search query: " + query);
+				twitterClient = twitterBot.postTweet
+			}else{
+				messageFunction("Sorry, I can't tell what you're trying to do.");
+			}
+			
 		},
-		usage: "<tweet body>",
-		description: "Post a tweet from the twitter channel. You must have the role 'tweeter' to post a tweet"
+		usage: "[add <tweet body>] [trending] [search]",
+		description: "Post a tweet to @MarinMakers (iff you have the role 'tweeter'), check trending topics, search twitter"
 	},
 	'!todo': {
 		//doing this NoSQL because yes.
@@ -177,7 +198,10 @@ var commands = {
 	'!ping': {
 		process: function(message, argument){
 			bot.sendMessage(message.channel, "Eat a banana, " + message.author.name);
-			console.log("Ping from " + message.author + " aka " + message.author.username);
+			// console.log("Ping from " + message.author + " aka " + message.author.username);
+			// console.log(message.server.memberMap)
+			console.log(message.author.id);
+			console.log(message.server.memberMap[message.author.id].nick);
 		},
 		description: "dumps info on the user to the console of the server."
 	},
