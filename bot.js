@@ -33,7 +33,7 @@ var twitterBot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 var gitHelper = require('./nifty/git.js');
 var lastSeen = require('./nifty/lastseen.js');
-var pastebin = require('./nifty/pastebin.js');
+// var pastebin = require('./nifty/pastebin.js');
 
 //initialize the twitterClient variable, but don't give it a value
 var twitterClient;
