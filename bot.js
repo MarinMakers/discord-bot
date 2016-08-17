@@ -149,7 +149,7 @@ var commands = {
 				listFile.tasks.push({
 					time:     message.timestamp, //This will not be read later, but again, yes.
 					user:     message.sender.name,
-					task:     getPrameter(argument),
+					task:     getParameter(argument),
 					complete: false,
 					channel:  message.channel.name,
 					id:       listFile.id //This is going to be string datatype most of the time.
