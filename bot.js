@@ -80,7 +80,7 @@ var commands = {
 	//},
 	'!howtocode':{
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit.\n3. Everything is a callback.")
+			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. Everything gets console.log'd.\n3. Eat a banana.")
 		},
 		description: "Passes on our wisdom."
 	},
