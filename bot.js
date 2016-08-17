@@ -48,7 +48,8 @@ var checkRole = function(user, server, role){
 }
 
 var getMethod = function(argument){
-	if(argument.indexOf(' ') >= 0){
+	//Grab first word in a command
+	if(argument.indexOf(' ') != -1){
 		return argument.substring(0, argument.indexOf(' '));
 	}else{
 		return argument;
@@ -133,7 +134,9 @@ var commands = {
 				return task.channel == message.channel.name;
 			});
 
-			if (argument.substring(0,3) === "add") {
+			var method = getMethod(argument);
+
+			if (method === "add") {
 				// Add task
 				listFile.tasks.push({
 					time:     message.timestamp, //This will not be read later, but again, yes.
@@ -146,7 +149,7 @@ var commands = {
 				bot.sendMessage(message.channel, message.author+": Entry " + listFile.id +" added successfully!");
 				listFile.id = (listFile.id + 1);
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			}  else if (argument.split(" ")[0] === "remove") {
+			}  else if (method === "remove") {
 				// Remove task
 				var removeId = parseInt(argument.split(" ")[1]);
 				for (task in listFile.tasks) {
@@ -158,7 +161,7 @@ var commands = {
 					}
 				}
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			}  else if (argument.split(" ")[0] === "complete") {
+			}  else if (method === "complete") {
 				// Complete task
 				var completeId = parseInt(argument.split(" ")[1]);
 				for (task in listFile.tasks) {
@@ -169,7 +172,14 @@ var commands = {
 					}
 				}
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			}  else {
+			}  else if (method === "clear") {
+				// Delete everything
+				
+			}  
+			else if (method === "export") {
+				
+			}  
+			else {
 				// View all tasks
 				if (todoList.length == 0) {
 					bot.sendMessage(message.channel, "No tasks found on this channel. Add some with `!todo add <task>`");
