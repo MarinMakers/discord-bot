@@ -3,7 +3,12 @@
 //DO NOT UPLOAD YOUR auth.json FILE TO GITHUB. Bots steal yo info.
 
 {
-	doscord_login_key: <API_KEY>
-	youtube_key: <API_KEY>,
+	"token": "<token for your discord app>",
+	"twitter": {
+		"consumer_key":"<your super secret info>",
+		"consumer_secret":"<your super secret info>",
+		"access_token_key":"<your super secret info>",
+		"access_token_secret":"<your super secret info>"
+	},
 	google_api_key: <API_KEY>
 }

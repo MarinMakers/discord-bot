@@ -1,6 +1,5 @@
-auth.json
 .DS_Store
 node_modules
-db/*.json
 lastseen.json
-test
+auth.json
+db/
