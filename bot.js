@@ -103,7 +103,7 @@ var commands = {
 			}else if (method === "tweet"){
 				var tweet = getParameter(argument);
 				if (checkRole(message.author, message.server, 'tweeter')){
-					twitterClient = twitterBot.postTweet(twitterClient, tweet, messageFunction);
+					twitterBot.postTweet(twitterClient, tweet, messageFunction);
 				} else {
 					messageFunction("Sorry, you must have the role 'tweeter' to post a tweet to @MarinMakers. Talk to an admin for permissions.")
 				}
@@ -113,15 +113,14 @@ var commands = {
 				messageFunction("This will eventually get trending tweets from twitter");
 			}else if (method === "search"){
 				//search twitter for the remainder of the argument
-				var query = argument.substring(6, argument.length).trim();
-				console.log("twitter search query: " + query);
-				twitterClient = twitterBot.postTweet
+				var query = getParameter(argument);
+				twitterBot.search(twitterClient, query, messageFunction);
 			}else{
 				messageFunction("Sorry, I can't tell what you're trying to do.");
 			}
 			
 		},
-		usage: "[add <tweet body>] [trending] [search]",
+		usage: "[add <tweet body>] [trending] [search <query>]",
 		description: "Post a tweet to @MarinMakers (iff you have the role 'tweeter'), check trending topics, search twitter"
 	},
 	'!todo': {

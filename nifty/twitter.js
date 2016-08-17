@@ -22,21 +22,39 @@ var postTweet = function(twitter_client, tweet, messageFunction){
 	if(twitter_client){
 		twitter_client.post('statuses/update', {status: tweet}, function(error, tweet, response){
 			if(error){
-				console.log('error: ' + error)
-				messageFunction("Error posting tweet...")
+				console.log('error: ' + error);
+				messageFunction("Error posting tweet...");
 			}
 			else {
-				messageFunction("Posted tweet successfully!")
-			}
-			console.log("Tweeted: " + tweet)
-			console.log("Response: " + response)
+				messageFunction("Posted tweet successfully!");
+			};
+			console.log("Tweeted: " + tweet);
+			console.log("Response: " + response);
 		})
 	}else{
-		messageFunction("You must run '!twitter initialize' before you can post a tweet!")
+		messageFunction("You must run '!twitter initialize' before you can post a tweet!");
+	}
+}
+
+var search = function(twitterClient, query, messageFunction){
+	if(twitterClient){
+		twitterClient.get('search/tweets', {q: query}, function(error, tweets, response){
+			if(error){
+				console.log('error: ' + error);
+				messageFunction("Error searching Twitter for " + query + ".");
+			}
+			var tweets = tweets.statuses;
+			for(var i = 0; i < 5; i++){
+				messageFunction('Tweet: " ' + tweets[i].text + ' ", by: ' + tweets[i].user.screen_name)
+			}
+		})
+	}else{
+		messageFunction("You must run '!twitter initialize' before you can search twitter!");
 	}
 }
 
 module.exports = {
 	postTweet: postTweet,
-	initialize: initialize
+	initialize: initialize,
+	search: search
 }
