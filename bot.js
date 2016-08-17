@@ -109,9 +109,10 @@ var commands = {
 					messageFunction("Sorry, you must have the role 'tweeter' to post a tweet to @MarinMakers. Talk to an admin for permissions.")
 				}
 			}else if (method === "trending"){
+				twitterBot.getTrending(twitterClient, messageFunction);
 				//get trending tweets
 				// twitterClient = twitterBot.getTrending(twitterClient, messageFunction);
-				messageFunction("This will eventually get trending tweets from twitter");
+				// messageFunction("This will eventually get trending tweets from twitter");
 			}else if (method === "search"){
 				//search twitter for the remainder of the argument
 				var query = getParameter(argument);
@@ -141,7 +142,7 @@ var commands = {
 				listFile.tasks.push({
 					time:     message.timestamp, //This will not be read later, but again, yes.
 					user:     message.sender.name,
-					task:     getPrameter(argument)
+					task:     getPrameter(argument),
 					complete: false,
 					channel:  message.channel.name,
 					id:       listFile.id //This is going to be string datatype most of the time.

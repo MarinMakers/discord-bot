@@ -53,8 +53,28 @@ var search = function(twitterClient, query, messageFunction){
 	}
 }
 
+var getTrending = function(twitterClient, messageFunction){
+	if(twitterClient){
+		twitterClient.get('trends/place', {id: 1}, function(error, tweets, response){
+			if(error){
+				console.log('error :' + error);
+				messageFunction("Error pulling trends :/");
+			}
+			var trends = tweets[0].trends;
+			for(var i = 0; i < trends.length; i++){
+				console.log(trends[i].name);
+			}
+			console.log(tweets[0].trends[0]);
+			messageFunction("console.log'd");
+		})
+	}else{
+		messageFunction("You must run '!twitter initialize' before you can track trends on twitter!")
+	}
+}
+
 module.exports = {
 	postTweet: postTweet,
 	initialize: initialize,
-	search: search
+	search: search,
+	getTrending: getTrending
 }
