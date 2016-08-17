@@ -1,5 +1,5 @@
 //This is the main script for the bot. To start the bot, run this script with node
-var port = (process.argv[2]) ? process.argv[2] : 8080
+var port = 8080
 
 try {
 	var Discord = require("discord.js");
@@ -230,8 +230,7 @@ var commands = {
 	'!kill': {
 		process: function(message, argument) {
 			if (checkRole(message.author, message.server, 'developer') || checkRole(message.author, message.server, 'Admin')) {
-				bot.sendMessage(message.channel, "Beep boop, powering down.");
-				process.exit();
+				bot.sendMessage(message.channel, "Beep boop, powering down.").then(function() {process.exit()});
 			}  else {
 				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
 			}
@@ -257,6 +256,10 @@ bot.on('message', function(message){
 
 	if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
 		bot.sendMessage(message.channel,":banana:");
+	}
+
+	if (message.content.toLowerCase().indexOf("lenny") != -1) {
+		bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
 	}
 	//if bot is mentioned
 	if (message.isMentioned(bot.user)) {
