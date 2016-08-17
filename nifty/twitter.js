@@ -87,7 +87,6 @@ var getTrending = function(twitterClient, messageFunction){
 				var trends = tweets[0].trends;
 				trendingFile.length = trends.length;
 				for(var i = 0; i < trends.length; i++){
-					console.log(trends[i])
 					trendingFile[i] = trends[i];
 				}
 				messageFunction("Pulled new trending subjects");

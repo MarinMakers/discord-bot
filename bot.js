@@ -77,6 +77,12 @@ var commands = {
 		//usage: "<arguments>", // Do not make usage property if command does not need adtl arguments.
 		//description: "This is an example implementation of a command.",
 	//},
+	'!howtocode':{
+		process: function(message, argument){
+			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit.\n3. Everything is a callback.")
+		},
+		description: "Passes on our wisdom."
+	}
 	'!lastseen': {
 		process: function(message, argument){
 			lastSeen.lookup(argument, function(msg){
