@@ -2,7 +2,7 @@
 .DS_Store
 node_modules
 
-# Auth file for tokens
+# Auth file for tokens. Remove this line at your own risk!
 auth.json
 
 # All persisted data should live in this folder, ex. todo.json
