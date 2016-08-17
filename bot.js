@@ -33,6 +33,7 @@ var twitterBot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 var gitHelper = require('./nifty/git.js');
 var lastSeen = require('./nifty/lastseen.js');
+var pastebin = require('./nifty/pastebin.js');
 
 //initialize the twitterClient variable, but don't give it a value
 var twitterClient;
@@ -151,13 +152,21 @@ var commands = {
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
 			}  else if (method === "remove") {
 				// Remove task
-				var removeId = parseInt(argument.split(" ")[1]);
-				for (task in listFile.tasks) {
-					var singleTask = listFile.tasks[task];
-					if (singleTask.id === removeId) {
-						listFile.tasks.splice(task,1);
-						bot.sendMessage(message.channel, message.author + ": Entry " + removeId + " removed successfully!");
-						break;
+				var idArr = argument.split(" ")[1].split(",").map(function(num) {return parseInt(num)});
+
+				for (id in idArr) {
+					for (task in listFile.tasks) {
+						var singleTask = listFile.tasks[task];
+						if (singleTask.id === idArr[id]) {
+							if (singleTask.user != message.sender.name) {
+								bot.sendMessage(message.channel, "You do not have privilege to Entry " + singleTask.id);
+								break;
+							}  else {
+								listFile.tasks.splice(task,1);
+								bot.sendMessage(message.channel, message.author + ": Entry " + idArr[id] + " removed successfully!");
+								break;
+							}
+						}
 					}
 				}
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
@@ -172,12 +181,12 @@ var commands = {
 					}
 				}
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			}  else if (method === "clear") {
+			/*}  else if (method === "clear") {
 				// Delete everything
-
 			}  
 			else if (method === "export") {
-
+				console.log("a");
+				pastebin.post('./db/todo.json')*/
 			}  
 			else {
 				// View all tasks
