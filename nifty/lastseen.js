@@ -1,11 +1,11 @@
 var fs = require('fs');
 
 try {
-	var lastSeenFile = JSON.parse(fs.readFileSync('./lastseen.json'));
+	var lastSeenFile = JSON.parse(fs.readFileSync('./db/lastseen.json'));
 }catch (e){
 	console.log("Initializing lastseen.json...");
-	fs.writeFileSync('./lastseen.json', '{}');
-	lastSeenFile = JSON.parse(fs.readFileSync('./lastseen.json'));
+	fs.writeFileSync('./db/lastseen.json', '{}');
+	lastSeenFile = JSON.parse(fs.readFileSync('./db/lastseen.json'));
 }
 
 var getTimestamp = function(message){
@@ -33,7 +33,7 @@ var learn = function(message){
 
 var remember = function(){
 	//write loaded lastSeenFile to lastseen.json
-	fs.writeFile('./lastseen.json', JSON.stringify(lastSeenFile));
+	fs.writeFile('./db/lastseen.json', JSON.stringify(lastSeenFile));
 }
 
 module.exports = {
