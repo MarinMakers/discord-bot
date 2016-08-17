@@ -174,10 +174,10 @@ var commands = {
 				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
 			}  else if (method === "clear") {
 				// Delete everything
-				
+
 			}  
 			else if (method === "export") {
-				
+
 			}  
 			else {
 				// View all tasks
@@ -272,8 +272,12 @@ var commands = {
 			}
 		},
 		description: "This kills the robot. Must have proper privileges to execute."
+	},
+	'!task': {
+		process: function(message,argument) {commands["!todo"].process(message,argument)}
 	}
 }
+
 
 function output(error, token) {
     if (error) {
@@ -298,7 +302,7 @@ bot.on('message', function(message){
 		bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
 	}
 	//if bot is mentioned
-	if (message.isMentioned(bot.user) || process.argv.indexOf("-l") != -1 || process.argv.indexOf("-local") != -1) {
+	if (message.isMentioned(bot.user) || process.argv.indexOf("-l") != -1 && message.content.substring(0,1)=="!" || process.argv.indexOf("-local") != -1 && message.content.substring(0,1)=="!") {
 		//Trim the mention from the message and any whitespace
 		var command = message.content.substring(message.content.indexOf("!"),message.content.length).trim();
 		if (command.substring(0,1) === "!") {
