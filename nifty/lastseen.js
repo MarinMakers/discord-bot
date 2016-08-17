@@ -35,7 +35,7 @@ var learn = function(message){
 
 var remember = function(){
 	//write loaded lastSeenFile to lastseen.json
-	fs.writeFile('./lastseen.json', JSON.stringify(lastSeenFile));
+	fs.writeFile('./db/lastseen.json', JSON.stringify(lastSeenFile));
 }
 
 module.exports = {
