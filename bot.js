@@ -78,6 +78,12 @@ var commands = {
 		//usage: "<arguments>", // Do not make usage property if command does not need adtl arguments.
 		//description: "This is an example implementation of a command.",
 	//},
+	'!howtocode':{
+		process: function(message, argument){
+			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit.\n3. Everything is a callback.")
+		},
+		description: "Passes on our wisdom."
+	},
 	'!lastseen': {
 		process: function(message, argument){
 			lastSeen.lookup(argument, function(msg){
@@ -110,9 +116,10 @@ var commands = {
 					messageFunction("Sorry, you must have the role 'tweeter' to post a tweet to @MarinMakers. Talk to an admin for permissions.")
 				}
 			}else if (method === "trending"){
+				twitterBot.getTrending(twitterClient, messageFunction);
 				//get trending tweets
 				// twitterClient = twitterBot.getTrending(twitterClient, messageFunction);
-				messageFunction("This will eventually get trending tweets from twitter");
+				// messageFunction("This will eventually get trending tweets from twitter");
 			}else if (method === "search"){
 				//search twitter for the remainder of the argument
 				var query = getParameter(argument);
@@ -142,7 +149,7 @@ var commands = {
 				listFile.tasks.push({
 					time:     message.timestamp, //This will not be read later, but again, yes.
 					user:     message.sender.name,
-					task:     argument.substring(3,argument.length).trim(),
+					task:     getPrameter(argument),
 					complete: false,
 					channel:  message.channel.name,
 					id:       listFile.id //This is going to be string datatype most of the time.
