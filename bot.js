@@ -286,10 +286,9 @@ bot.on('message', function(message){
 		bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
 	}
 	//if bot is mentioned
-	if (message.isMentioned(bot.user)) {
+	if (message.isMentioned(bot.user) || process.argv.indexOf("-l") != -1 || process.argv.indexOf("-local") != -1) {
 		//Trim the mention from the message and any whitespace
-		var command = message.content.substring(bot.user.id.length+4,message.content.length).trim();
-		//If first character is !, <insert hella commands>
+		var command = message.content.substring(message.content.indexOf("!"),message.content.length).trim();
 		if (command.substring(0,1) === "!") {
 			var to_execute = command.split(' ')[0];
 			var argument = command.substring(command.indexOf(' ')+1, command.length);
