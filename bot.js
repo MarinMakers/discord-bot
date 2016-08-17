@@ -82,7 +82,7 @@ var commands = {
 			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit.\n3. Everything is a callback.")
 		},
 		description: "Passes on our wisdom."
-	}
+	},
 	'!lastseen': {
 		process: function(message, argument){
 			lastSeen.lookup(argument, function(msg){
