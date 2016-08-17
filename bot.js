@@ -17,10 +17,10 @@ try {
 var fs = require('fs');
 
 try {
-	var todoList = require('./todo.json');
+	var todoList = require('./db/todo.json');
 } catch (e) {
 	console.log("To-do list not found - creating blank one.");
-	fs.writeFileSync("./todo.json", '{"id":1,"tasks":[]}');
+	fs.writeFileSync("./db/todo.json", '{"id":1,"tasks":[]}');
 }
 
 var bot = new Discord.Client();
@@ -107,7 +107,7 @@ var commands = {
 		//doing this NoSQL because yes.
 		process: function(message,argument) {
 			// V JSON file imported and parsed
-			var listFile = JSON.parse(fs.readFileSync('./todo.json'));
+			var listFile = JSON.parse(fs.readFileSync('./db/todo.json'));
 			// V New array created out of tasks created in the channel message was sent from
 			var todoList = listFile.tasks.filter( function(task) {
 				return task.channel == message.channel.name;
@@ -125,7 +125,7 @@ var commands = {
 				});
 				bot.sendMessage(message.channel, message.author+": Entry " + listFile.id +" added successfully!");
 				listFile.id = (listFile.id + 1);
-				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
+				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
 			}  else if (argument.split(" ")[0] === "remove") {
 				// Remove task
 				var removeId = parseInt(argument.split(" ")[1]);
@@ -137,7 +137,7 @@ var commands = {
 						break;
 					}
 				}
-				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
+				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
 			}  else if (argument.split(" ")[0] === "complete") {
 				// Complete task
 				var completeId = parseInt(argument.split(" ")[1]);
@@ -148,7 +148,7 @@ var commands = {
 						break;
 					}
 				}
-				fs.writeFileSync('./todo.json',JSON.stringify(listFile));
+				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
 			}  else {
 				// View all tasks
 				if (todoList.length == 0) {
