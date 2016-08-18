@@ -156,7 +156,7 @@ var commands = {
 	},
 	'!ping': {
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "Eat a banana, " + message.author.name);
+			bot.sendMessage(message.channel, "New bot! Eat a banana, " + message.author.name);
 			// console.log("Ping from " + message.author + " aka " + message.author.username);
 			// console.log(message.server.memberMap)
 			console.log(message.author.id);
