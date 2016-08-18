@@ -228,8 +228,8 @@ var commands = {
 			if (checkRole(message.author,message.server,"developer")) {
 				eval(argument);
 			}
-		}
-		usage: "!eval <raw code>"
+		},
+		usage: "!eval <raw code>",
 		description: "Interact with the bot at the lowest level. Be careful or things will break."
 	}
 }
