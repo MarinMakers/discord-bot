@@ -49,7 +49,7 @@ var remove = function(ids, message, messageFunction){
 					messageFunction(message.author+": Entry " + idArr[id] + " removed successfully!");
 					break;
 				}else{
-					messageFunction("Sorry, you do not have privileges for entry " + singleTask.idOnChannel);
+					messageFunction("Sorry, you do not have privileges for entry " + idArr[id]);
 					break;
 				}
 			}
