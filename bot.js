@@ -133,10 +133,13 @@ var commands = {
 			}
 
 			var method = getMethod(argument);
-
+			bot.sendMessage(message.channel,method);
 			if (method === "add"){
 				var taskToAdd = getParameter(argument);
 				todo.add(taskToAdd, message, messageFunction);
+			}  else if (method === "export") {
+				bot.sendMessage(message.channel,"Uploading file");
+				todo.exportList(message, messageFunction);
 			}  else if (method === "remove"){
 				var ids = getParameter(argument);
 				todo.remove(ids, message, messageFunction);
@@ -144,9 +147,6 @@ var commands = {
 				var id = getParameter(argument);
 				todo.complete(id, message, messageFunction);
 				// complete tasks
-			}  else if (method === "export") {
-				bot.sendMessage(message.channel,"Uploading file");
-				todo.exportList(message, messageFunction);
 			}  else{
 				todo.showTasks(message, messageFunction);
 			}
