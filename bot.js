@@ -137,14 +137,16 @@ var commands = {
 			if (method === "add"){
 				var taskToAdd = getParameter(argument);
 				todo.add(taskToAdd, message, messageFunction);
-			} else if (method === "remove"){
+			}  else if (method === "remove"){
 				var ids = getParameter(argument);
 				todo.remove(ids, message, messageFunction);
-			} else if (method === "complete"){
+			}  else if (method === "complete"){
 				var id = getParameter(argument);
 				todo.complete(id, message, messageFunction);
 				// complete tasks
-			}else{
+			}  else if (method === "export") {
+				todo.exportList(message, messageFunction);
+			}  else{
 				todo.showTasks(message, messageFunction);
 			}
 		},
