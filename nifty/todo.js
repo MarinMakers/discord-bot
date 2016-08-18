@@ -102,7 +102,13 @@ var showTasks = function(message, messageFunction){
 }
 
 var exportList = function(message, messageFunction) {
-	bot.sendFile(message.channel,"./db/todo.json");
+	bot.sendFile(message.channel,"./db/todo.json","To-do List","Uploading File...",function(err,msg) {
+		if (err) {
+			bot.sendMessage(message.channel,err);
+		}  else {
+			bot.sendMessage(message.channel,"File uploaded!");
+		}
+	});
 }
 
 module.exports = {
