@@ -37,9 +37,8 @@ var add = function(taskToAdd, message, messageFunction){
 }
 
 var remove = function(ids, message, messageFunction){
-	var idArr = ids.split(",");
+	var idArr = ids.split(",").map(function(num) {return parseInt(num.trim())});
 	for (id in idArr){
-		var targetId = parseInt(idArr[id]);
 		var found = false;
 		for (task in listFile.tasks){
 			var singleTask = listFile.tasks[task];
@@ -50,7 +49,7 @@ var remove = function(ids, message, messageFunction){
 					messageFunction(message.author+": Entry " + idArr[id] + " removed successfully!");
 					break;
 				}else{
-					messageFunction("Sorry, you do not have privileges for entry " + singleTask.id);
+					messageFunction("Sorry, you do not have privileges for entry " + singleTask.idOnChannel);
 					break;
 				}
 			}
