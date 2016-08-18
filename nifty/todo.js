@@ -101,9 +101,14 @@ var showTasks = function(message, messageFunction){
 	}
 }
 
+var exportList = function(message, messageFunction) {
+	bot.sendFile(message.channel,"./db/todo.json");
+}
+
 module.exports = {
 	add: add,
 	remove: remove,
 	complete: complete,
-	showTasks: showTasks
+	showTasks: showTasks,
+	exportList: exportList
 }
