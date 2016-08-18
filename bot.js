@@ -145,7 +145,7 @@ var commands = {
 				todo.complete(id, message, messageFunction);
 				// complete tasks
 			}  else if (method === "export") {
-				todo.exportList(message);
+				todo.exportList(message, messageFunction);
 			}  else{
 				todo.showTasks(message, messageFunction);
 			}
