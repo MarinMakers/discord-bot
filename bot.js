@@ -14,25 +14,17 @@ try {
 	console.log("Auth file not found!");
 }
 
-var fs = require('fs');
-
-try {
-	var todoList = require('./db/todo.json');
-} catch (e) {
-	console.log("To-do list not found - creating blank one.");
-	fs.writeFileSync("./db/todo.json", '{"id":1,"tasks":[]}');
-}
-
 var bot = new Discord.Client();
 
 var http = require('http');
-
+var fs = require('fs');
 var Twitter = require('twitter');
 var child_process = require('child_process');
 var twitterBot = require('./nifty/twitter.js');
 var decider = require('./nifty/decisions.js');
 var gitHelper = require('./nifty/git.js');
 var lastSeen = require('./nifty/lastseen.js');
+var todo = require('./nifty/todo.js');
 // var pastebin = require('./nifty/pastebin.js');
 
 //initialize the twitterClient variable, but don't give it a value
@@ -134,91 +126,30 @@ var commands = {
 	},
 	'!todo': {
 		//doing this NoSQL because yes.
-		process: function(message,argument) {
-			// V JSON file imported and parsed
-			var listFile = JSON.parse(fs.readFileSync('./db/todo.json'));
-			// V New array created out of tasks created in the channel message was sent from
-			var todoList = listFile.tasks.filter( function(task) {
-				return task.channel == message.channel.name;
-			});
+		process: function(message, argument) {
+
+			var messageFunction = function(msg){
+				bot.sendMessage(message.channel, msg);
+			}
 
 			var method = getMethod(argument);
 
-			if (method === "add") {
-				// Add task
-				listFile.tasks.push({
-					time:     message.timestamp, //This will not be read later, but again, yes.
-					user:     message.sender.name,
-					task:     getParameter(argument),
-					complete: false,
-					channel:  message.channel.name,
-					id:       listFile.id //This is going to be string datatype most of the time.
-				});
-				bot.sendMessage(message.channel, message.author+": Entry " + listFile.id +" added successfully!");
-				listFile.id = (listFile.id + 1);
-				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			}  else if (method === "remove") {
-				// Remove task
-				var idArr = argument.split(" ")[1].split(",").map(function(num) {return parseInt(num.trim())});
-
-				for (id in idArr) {
-					for (task in listFile.tasks) {
-						var singleTask = listFile.tasks[task];
-						if (singleTask.id === idArr[id]) {
-							if (singleTask.user != message.sender.name) {
-								bot.sendMessage(message.channel, "You do not have privilege to Entry " + singleTask.id);
-								break;
-							}  else {
-								listFile.tasks.splice(task,1);
-								bot.sendMessage(message.channel, message.author + ": Entry " + idArr[id] + " removed successfully!");
-								break;
-							}
-						}
-					}
-				}
-				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			}  else if (method === "complete") {
-				// Complete task
-				var completeId = parseInt(argument.split(" ")[1]);
-				for (task in listFile.tasks) {
-					if (listFile.tasks[task].id === completeId) {
-						listFile.tasks[task].complete = true;
-						bot.sendMessage(message.channel, message.author +": Entry " + completeId + " has been completed! Woo!!");
-						break;
-					}
-				}
-				fs.writeFileSync('./db/todo.json',JSON.stringify(listFile));
-			/*}  else if (method === "clear") {
-				// Delete everything
-			}  
-			else if (method === "export") {
-				console.log("a");
-				pastebin.post('./db/todo.json')*/
-			}  
-			else {
-				// View all tasks
-				if (todoList.length == 0) {
-					bot.sendMessage(message.channel, "No tasks found on this channel. Add some with `!todo add <task>`");
-				}  else {
-					var taskForm = "```diff\r! === " + message.channel.name + " To-do List ===\n";
-					for (task in todoList){
-						var singleTask = todoList[task];
-						if (singleTask.complete == true) {
-							//green syntax highlighting
-							taskForm += "+ ";
-						} else { 
-							//grey syntax highlighting
-							taskForm += "  ";
-						};
-						taskForm += singleTask.id + ".) " + singleTask['user'] + ": " + singleTask['task'] + "\n";
-					}
-					taskForm += "```";
-					bot.sendMessage(message.channel, taskForm);
-				}
+			if (method === "add"){
+				var taskToAdd = getParameter(argument);
+				todo.add(taskToAdd, message, messageFunction);
+			} else if (method === "remove"){
+				var ids = getParameter(argument);
+				todo.remove(ids, message, messageFunction);
+			} else if (method === "complete"){
+				var id = getParameter(argument);
+				todo.complete(id, message, messageFunction);
+				// complete tasks
+			}else{
+				todo.showTasks(message, messageFunction);
 			}
 		},
 		usage: "[add <string>] [remove <id>] [complete <id>]",
-		description: "Read the bot's to-do list, and write new entries"
+		description: "Interact with the bot's todo lists."
 	},
 	'!ping': {
 		process: function(message, argument){
@@ -324,8 +255,6 @@ bot.on('message', function(message){
 		if (command.substring(0,1) === "!") {
 			var to_execute = command.split(' ')[0];
 			var argument = command.substring(command.indexOf(' ')+1, command.length);
-			console.log('command: ' + to_execute);
-			console.log('argument: ' + argument);
 			if (commands[to_execute]) {
 				commands[to_execute].process(message, argument)
 			}  else {
