@@ -145,6 +145,7 @@ var commands = {
 				todo.complete(id, message, messageFunction);
 				// complete tasks
 			}  else if (method === "export") {
+				bot.sendMessage(message.channel,"Uploading file");
 				todo.exportList(message, messageFunction);
 			}  else{
 				todo.showTasks(message, messageFunction);
