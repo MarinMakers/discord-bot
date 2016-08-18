@@ -50,7 +50,8 @@ var getMethod = function(argument){
 }
 
 var getParameter = function(argument){
-	return argument.substring(argument.indexOf(' ')+1, argument.length);
+	var indexOfSpace = (argument.indexOf(' ') == -1) ? argument.length : argument.indexOf(' ') + 1;
+	return argument.substring(indexOfSpace, argument.length);
 }
 
 var commands = {
