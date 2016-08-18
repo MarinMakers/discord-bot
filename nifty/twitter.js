@@ -59,7 +59,7 @@ var postTweet = function(twitterClient, tweet, messageFunction){
 
 var search = function(twitterClient, query, messageFunction){
 	if(twitterClient){
-		twitterClient.get('search/tweets', {q: query}, function(error, tweets, response){
+		twitterClient.get('search/tweets', {q: query, lang: en}, function(error, tweets, response){
 			if(error){
 				console.log('error: ' + error);
 				messageFunction("Error searching Twitter for " + query + ".");
