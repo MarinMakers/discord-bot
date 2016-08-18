@@ -42,7 +42,7 @@ var remove = function(ids, message, messageFunction){
 		var found = false;
 		for (task in listFile.tasks){
 			var singleTask = listFile.tasks[task];
-			if(singleTask.idOnChannel === id && singleTask.channel === message.channel.name){
+			if(singleTask.idOnChannel === idArr[id] && singleTask.channel === message.channel.name){
 				found = true;
 				if (singleTask.user == message.sender.name){
 					listFile.tasks.splice(task, 1);
