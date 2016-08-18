@@ -42,7 +42,7 @@ var remove = function(ids, message, messageFunction){
 		var found = false;
 		for (task in listFile.tasks){
 			var singleTask = listFile.tasks[task];
-			if(singleTask.idOnChannel === targetId && singleTask.channel === message.channel.name){
+			if(singleTask.idOnChannel === id && singleTask.channel === message.channel.name){
 				found = true;
 				if (singleTask.user == message.sender.name){
 					listFile.tasks.splice(task, 1);
@@ -55,7 +55,7 @@ var remove = function(ids, message, messageFunction){
 			}
 		}
 		if (!found){
-			messageFunction("Sorry, couldn't find a task with the ID " + targetId);
+			messageFunction("Sorry, couldn't find a task with the ID " + id);
 		}
 	}
 	remember();
