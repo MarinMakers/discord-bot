@@ -50,8 +50,7 @@ var getMethod = function(argument){
 }
 
 var getParameter = function(argument){
-	var indexOfSpace = (argument.indexOf(' ') == -1) ? argument.length : argument.indexOf(' ') + 1;
-	return argument.substring(indexOfSpace, argument.length);
+	return argument.substring(argument.indexOf(' ')+1, argument.length);
 }
 
 var commands = {
@@ -223,6 +222,15 @@ var commands = {
 	},
 	'!task': {
 		process: function(message,argument) {commands["!todo"].process(message,argument)}
+	},
+	'!eval': {
+		process: function(message,argument){
+			if (checkRole(message.author,message.server,"developer")) {
+				eval(argument);
+			}
+		}
+		usage: "!eval <raw code>"
+		description: "Interact with the bot at the lowest level. Be careful or things will break."
 	}
 }
 
