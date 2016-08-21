@@ -1,6 +1,7 @@
 var listFile;
 
 var fs = require('fs');
+var bot = require('../bot.js');
 
 try {
 	listFile = JSON.parse(fs.readFileSync('./db/todo.json'));
