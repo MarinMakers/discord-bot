@@ -16,6 +16,8 @@ try {
 
 var bot = new Discord.Client();
 
+module.exports = bot;
+
 var http = require('http');
 var fs = require('fs');
 var Twitter = require('twitter');
@@ -122,7 +124,7 @@ var commands = {
 			
 		},
 		usage: "[add <tweet body>] [trending] [search <query>]",
-		description: "Post a tweet to @MarinMakers (iff you have the role 'tweeter'), check trending topics, search twitter"
+		description: "Post a tweet to @MarinMakers (if you have the role 'tweeter'), check trending topics, search twitter"
 	},
 	'!todo': {
 		//doing this NoSQL because yes.
@@ -145,7 +147,6 @@ var commands = {
 				todo.complete(id, message, messageFunction);
 				// complete tasks
 			}  else if (method === "export") {
-				bot.sendMessage(message.channel,"Uploading file"); // at the very least THIS should work!
 				todo.exportList(message, messageFunction);
 			}  else{
 				todo.showTasks(message, messageFunction);
