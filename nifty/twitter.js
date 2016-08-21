@@ -116,9 +116,11 @@ var sendTrending = function(messageFunction){
 	messageFunction(trendingString);
 }
 
-module.exports = {
-	postTweet: postTweet,
-	initialize: initialize,
-	search: search,
-	getTrending: getTrending
+module.exports = function(bot) {
+	return {
+		postTweet: postTweet,
+		initialize: initialize,
+		search: search,
+		getTrending: getTrending
+	}
 }

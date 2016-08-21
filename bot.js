@@ -22,12 +22,13 @@ var http = require('http');
 var fs = require('fs');
 var Twitter = require('twitter');
 var child_process = require('child_process');
-var twitterBot = require('./nifty/twitter.js');
-var decider = require('./nifty/decisions.js');
-var gitHelper = require('./nifty/git.js');
-var lastSeen = require('./nifty/lastseen.js');
-var todo = require('./nifty/todo.js');
-// var pastebin = require('./nifty/pastebin.js');
+
+//Custom modules
+var twitterBot = require('./nifty/twitter.js')(bot);
+var decider = require('./nifty/decisions.js')(bot);
+var gitHelper = require('./nifty/git.js')(bot);
+var lastSeen = require('./nifty/lastseen.js')(bot);
+var todo = require('./nifty/todo.js')(bot);
 
 //initialize the twitterClient variable, but don't give it a value
 var twitterClient;
@@ -147,7 +148,7 @@ var commands = {
 				todo.complete(id, message, messageFunction);
 				// complete tasks
 			}  else if (method === "export") {
-				todo.exportList(message, messageFunction);
+				todo.exportList(message, messageFunction,bot);
 			}  else{
 				todo.showTasks(message, messageFunction);
 			}

@@ -112,10 +112,13 @@ var exportList = function(message, messageFunction) {
 	});
 }
 
-module.exports = {
-	add: add,
-	remove: remove,
-	complete: complete,
-	showTasks: showTasks,
-	exportList: exportList
+module.exports = function(bot) {
+	return {
+		add: add,
+		remove: remove,
+		complete: complete,
+		showTasks: showTasks,
+		exportList: exportList
+	}
 }
+

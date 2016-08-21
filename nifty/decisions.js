@@ -26,7 +26,9 @@ var coin = function(callbackFunction){
 	callbackFunction(result);
 }
 
-module.exports = {
-	rollDice: roll,
-	coin: coin
+module.exports = function(bot) {
+	return {
+		rollDice: roll,
+		coin: coin
+	}
 }

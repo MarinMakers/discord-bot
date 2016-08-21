@@ -4,6 +4,8 @@ var myFunction = function(){
 	//code stuff
 };
 
-module.exports{
-	functionName:myFunction
+module.exports = function(bot) {
+	return {
+		functionName:myFunction
+	}
 }

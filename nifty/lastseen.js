@@ -38,7 +38,9 @@ var remember = function(){
 	fs.writeFile('./db/lastseen.json', JSON.stringify(lastSeenFile));
 }
 
-module.exports = {
-	lookup: lookup,
-	learn: learn
+module.exports = function(bot){
+	return {
+		lookup: lookup,
+		learn: learn
+	}
 }

@@ -12,6 +12,8 @@ function pull(messageFunction){
 	})
 }
 
-module.exports = {
-	pull: pull
+module.exports = function(bot) {
+	return {
+		pull: pull
+	}
 }
