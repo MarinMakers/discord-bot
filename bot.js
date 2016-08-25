@@ -34,13 +34,13 @@ var todo = require('./nifty/todo.js')(bot);
 var twitterClient;
 
 //call checkRole(message.sender, message.server, 'role')
-var checkRole = function(user, server, role){
+bot.checkRole = function(user, server, role){
 	for (var i = 0; i < server.roles.length; i++){
 		if(server.roles[i].name == role && user.hasRole(server.roles[i])){
-			return true
+			return true;
 		}
 	}
-	return false
+	return false;
 }
 
 var getMethod = function(argument){
@@ -75,7 +75,7 @@ var commands = {
 	//},
 	'!howtocode':{
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. Everything gets console.log'd.\n3. Eat a banana.")
+			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit!\n3. Eat a banana.")
 		},
 		description: "Passes on our wisdom."
 	},
@@ -98,14 +98,14 @@ var commands = {
 			var method = getMethod(argument);
 
 			if (method === "initialize"){
-				if (checkRole(message.author, message.server, 'developer')){
+				if (bot.checkRole(message.author, message.server, 'developer')){
 					twitterClient = twitterBot.initialize(messageFunction);
 				}else{
 					messageFunction("Sorry, you must have the role 'developer' to start up my twitter functions.");
 				}
 			}else if (method === "tweet"){
 				var tweet = getParameter(argument);
-				if (checkRole(message.author, message.server, 'tweeter')){
+				if (bot.checkRole(message.author, message.server, 'tweeter')){
 					twitterBot.postTweet(twitterClient, tweet, messageFunction);
 				} else {
 					messageFunction("Sorry, you must have the role 'tweeter' to post a tweet to @MarinMakers. Talk to an admin for permissions.")
@@ -174,7 +174,7 @@ var commands = {
 	},
 	'!pull': {
 		process: function(message, argument){
-			if (checkRole(message.author, message.server, 'developer')){
+			if (bot.checkRole(message.author, message.server, 'developer')){
 				gitHelper.pull(function(msg){
 					bot.sendMessage(message.channel, msg);
 				})
@@ -214,7 +214,7 @@ var commands = {
 	},
 	'!kill': {
 		process: function(message, argument) {
-			if (checkRole(message.author, message.server, 'developer') || checkRole(message.author, message.server, 'Admin')) {
+			if (bot.checkRole(message.author, message.server, 'developer') || bot.checkRole(message.author, message.server, 'Admin')) {
 				console.log("Being shut down by " + message.author.username);
 				bot.sendMessage(message.channel, "Beep boop, powering down.").then(function() {
 					process.exit();
@@ -225,8 +225,18 @@ var commands = {
 		},
 		description: "This kills the robot. Must have proper privileges to execute."
 	},
+	'!w2g': {
+		process: function(message, argument) {
+			var watch2getherUrl = "https://www.watch2gether.com/go#" + getParameter(argument);
+			bot.sendMessage(message.channel, "watch2gether link: " + watch2getherUrl);
+		},
+		description: "Create a watch2gether.com lobby"
+	},
 	'!task': {
-		process: function(message,argument) {commands["!todo"].process(message,argument)}
+		process: function(message,argument) {
+			commands["!todo"].process(message,argument)
+		},
+		description: "Alias for !todo"
 	}
 }
 
