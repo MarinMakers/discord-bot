@@ -14,9 +14,15 @@ try {
 	console.log("Auth file not found!");
 }
 
-var bot = new Discord.Client();
+var botParameters = {
+	"localMode": ((process.argv.indexOf("-l") != -1 || process.argv.indexOf("-local") != -1) ? true : false)
+}
 
-module.exports = bot;
+if (botParameters.localMode) {
+	console.log("Starting bot in local mode..")
+}
+
+var bot = new Discord.Client();
 
 var http = require('http');
 var fs = require('fs');
@@ -264,7 +270,7 @@ bot.on('message', function(message){
 		bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
 	}
 	//if bot is mentioned
-	if (message.isMentioned(bot.user) || process.argv.indexOf("-l") != -1 && message.content.substring(0,1)=="!" || process.argv.indexOf("-local") != -1 && message.content.substring(0,1)=="!") {
+	if (message.isMentioned(bot.user) || botParameters.localMode && message.content.substring(0,1)=="!") {
 		//Trim the mention from the message and any whitespace
 		var command = message.content.substring(message.content.indexOf("!"),message.content.length).trim();
 		if (command.substring(0,1) === "!") {
@@ -282,3 +288,5 @@ bot.on('message', function(message){
 http.createServer().listen(port, function(){
 	console.log("Listening on port: " + port);
 })
+
+module.exports = bot;
