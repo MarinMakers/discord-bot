@@ -272,7 +272,7 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
-	if (message.author.id != bot.user.id) {
+	if (!message.author.bot) {
 		lastSeen.learn(message);
 
 		if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
