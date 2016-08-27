@@ -164,11 +164,10 @@ var commands = {
 	},
 	'!ping': {
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "New bot! Eat a banana, " + message.author.name);
+			bot.sendMessage(message.channel, message.author + " pong!");
 			// console.log("Ping from " + message.author + " aka " + message.author.username);
 			// console.log(message.server.memberMap)
-			console.log(message.author.id);
-			console.log(message.server.memberMap[message.author.id].nick);
+			console.log(message.author);
 		},
 		description: "dumps info on the user to the console of the server."
 	},
@@ -256,7 +255,23 @@ var commands = {
 			var now = new Date();
 			if (!bot.cooldown || ( now.valueOf() - bot.cooldown.valueOf() ) >= 86400000) {
 				bot.cooldown = new Date();
-				bot.sendMessage(message.channel, "Fine you meme loving fucks\nhttps://www.youtube.com/watch?v=6E5m_XtCX3c");
+				if (message.author.voiceChannel == null) {
+					// If sender is not in a voice channel
+					bot.sendMessage(message.channel, "Fine you meme loving fucks\nhttps://www.youtube.com/watch?v=6E5m_XtCX3c");
+				}  else {
+					// Join voice channel and play the song
+					bot.joinVoiceChannel(message.author.voiceChannel, function(err, connection) {
+						if (err) {
+							console.log(err)
+						}
+						if (connection) {
+							// If this is failing, chech out this article.. https://github.com/hydrabolt/discord.js/issues/415
+							console.log("Playing file - ocean_man.mp3");
+							connection.playFile('./audio/ocean_man.mp3');
+						}
+					});
+				}
+				
 			}  else {
 				var cooldownHours = 24 - parseInt(Math.abs(now - bot.cooldown) / 36e5);
 				bot.sendMessage(message.channel, "You can't use this meme for another " + cooldownHours + " hours. How tragic.");
