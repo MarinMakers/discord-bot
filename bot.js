@@ -272,28 +272,28 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
-	if (message.content.indexOf("!help") === -1) {
+	if (message.author.id != bot.user.id) {
 		lastSeen.learn(message);
-	}
 
-	if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
-		bot.sendMessage(message.channel,":banana:");
-	}
+		if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
+			bot.sendMessage(message.channel,":banana:");
+		}
 
-	if (message.content.toLowerCase().indexOf("lenny") != -1) {
-		bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
-	}
-	//if bot is mentioned
-	if (message.isMentioned(bot.user) || botParameters.localMode && message.content.substring(0,1)=="!") {
-		//Trim the mention from the message and any whitespace
-		var command = message.content.substring(message.content.indexOf("!"),message.content.length).trim();
-		if (command.substring(0,1) === "!") {
-			var to_execute = command.split(' ')[0];
-			var argument = command.substring(command.indexOf(' ')+1, command.length);
-			if (commands[to_execute]) {
-				commands[to_execute].process(message, argument)
-			}  else {
-				bot.sendMessage(message.channel, "Unknown Command :(");
+		if (message.content.toLowerCase().indexOf("lenny") != -1) {
+			bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
+		}
+		//if bot is mentioned
+		if (message.isMentioned(bot.user) || botParameters.localMode && message.content.substring(0,1)=="!") {
+			//Trim the mention from the message and any whitespace
+			var command = message.content.substring(message.content.indexOf("!"),message.content.length).trim();
+			if (command.substring(0,1) === "!") {
+				var to_execute = command.split(' ')[0];
+				var argument = command.substring(command.indexOf(' ')+1, command.length);
+				if (commands[to_execute]) {
+					commands[to_execute].process(message, argument)
+				}  else {
+					bot.sendMessage(message.channel, "Unknown Command :(");
+				}
 			}
 		}
 	}
