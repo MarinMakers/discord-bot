@@ -243,6 +243,19 @@ var commands = {
 			commands["!todo"].process(message,argument)
 		},
 		description: "Alias for !todo"
+	},
+	'!oceanman': {
+		process: function(message, argument) {
+			var now = new Date();
+			if (!bot.cooldown || ( now.valueOf() - bot.cooldown.valueOf() ) >= 86400000) {
+				bot.cooldown = new Date();
+				bot.sendMessage(message.channel, "Fine you meme loving fucks\nhttps://www.youtube.com/watch?v=6E5m_XtCX3c");
+			}  else {
+				var cooldownHours = 24 - parseInt(Math.abs(now - bot.cooldown) / 36e5);
+				bot.sendMessage(message.channel, "You can't use this meme for another " + cooldownHours + " hours. How tragic.");
+			}
+		},
+		description: "Obligatory meme. You're welcome Stephen."
 	}
 }
 
@@ -259,8 +272,9 @@ function output(error, token) {
 bot.loginWithToken(discord_auth.token, output);
 
 bot.on('message', function(message){
-
-	lastSeen.learn(message);
+	if (message.content.indexOf("!help") === -1) {
+		lastSeen.learn(message);
+	}
 
 	if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
 		bot.sendMessage(message.channel,":banana:");
