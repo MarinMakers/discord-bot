@@ -218,6 +218,13 @@ var commands = {
 		usage: "<d20 syntax>",
 		description: "Roll dice using d20 syntax"
 	},
+	'!say': {
+		process: function(message, argument) {
+			bot.sendMessage(message.channel, argument);
+		},
+		usage: "<string>",
+		description: "Make the bot say something"
+	},
 	'!kill': {
 		process: function(message, argument) {
 			if (bot.checkRole(message.author, message.server, 'developer') || bot.checkRole(message.author, message.server, 'Admin')) {
@@ -255,7 +262,7 @@ var commands = {
 				bot.sendMessage(message.channel, "You can't use this meme for another " + cooldownHours + " hours. How tragic.");
 			}
 		},
-		description: "Obligatory meme. You're welcome Stephen."
+		description: "Obligatory meme. You're welcome Stephen"
 	}
 }
 
