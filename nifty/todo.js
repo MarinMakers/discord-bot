@@ -45,11 +45,11 @@ var remove = function(ids, message, messageFunction){
 			var singleTask = listFile.tasks[task];
 			if(singleTask.idOnChannel === idArr[id] && singleTask.channel === message.channel.name){
 				found = true;
-				if (singleTask.user == message.sender.name){
+				if (singleTask.user == message.sender.name || singleTask.complete){
 					listFile.tasks.splice(task, 1);
 					messageFunction(message.author+": Entry " + idArr[id] + " removed successfully!");
 					break;
-				}else{
+				} else{
 					messageFunction("Sorry, you do not have privileges for entry " + idArr[id]);
 					break;
 				}
