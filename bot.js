@@ -266,6 +266,7 @@ var commands = {
 						}
 						if (connection) {
 							// If this is failing, chech out this article.. https://github.com/hydrabolt/discord.js/issues/415
+							bot.sendMessage(message.channel, "Please end my suffering");
 							console.log("Playing file - ocean_man.mp3");
 							connection.playFile('./audio/ocean_man.mp3');
 						}
