@@ -1,6 +1,4 @@
 //This is the main script for the bot. To start the bot, run this script with node
-var port = 8080
-
 try {
 	var Discord = require("discord.js");
 } catch (e){
@@ -24,7 +22,6 @@ if (botParameters.localMode) {
 
 var bot = new Discord.Client();
 
-var http = require('http');
 var fs = require('fs');
 var Twitter = require('twitter');
 var child_process = require('child_process');
@@ -322,7 +319,18 @@ bot.on('message', function(message){
 	}
 })
 
-http.createServer().listen(port, function(){
+//HTTP server stuff
+var http = require('http');
+var express = require('express');
+var app = express();
+var port = 3000;		
+
+app.get('/', function(req,res) {
+	console.log("Heard the boop");
+	res.send("Hello World");
+})
+
+app.listen(port, function(){
 	console.log("Listening on port: " + port);
 })
 
