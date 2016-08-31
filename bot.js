@@ -247,6 +247,23 @@ var commands = {
 		},
 		description: "Alias for !todo"
 	},
+	'!silence': {
+		process: function(message, argument) {
+			if (message.author.id == "157959654599557120"|| message.author.id == "127060142935113728") {
+				bot.joeMute = new Date();
+				bot.sendFile(message.channel, "./media/images/silence_spell.png");
+				bot.sendMessage(message.channel, message.author.username + " cast Silence on Joe!");
+			}  else {
+				bot.sendMessage(":V"); 
+			}
+		}
+	},
+	'!fight': {
+		process: function(message, argument) {
+			var emote = (Math.random() > 0.9)?"ʕ ง•ᴥ•ʔ ง":"(ง'̀-'́)ง";
+			bot.sendMessage(message.channel, emote);
+		}
+	},
 	'!oceanman': {
 		process: function(message, argument) {
 			var now = new Date();
@@ -291,9 +308,18 @@ function output(error, token) {
 
 bot.loginWithToken(discord_auth.token, output);
 
+bot.joeMute = "";
+
 bot.on('message', function(message){
 	if (!message.author.bot) {
 		lastSeen.learn(message);
+
+		if (message.author.id == "143825552787243008" && (new Date().valueOf() - bot.joeMute.valueOf()) < 60000) {
+			bot.deleteMessage(message,{'wait':0},function() {
+				var kindWords = (Math.random()< 0.5) ? "Quiet you." : "Shh";
+				bot.sendMessage(message.channel, kindWords);
+			});
+		}
 
 		if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
 			bot.sendMessage(message.channel,":banana:");
@@ -301,6 +327,10 @@ bot.on('message', function(message){
 
 		if (message.content.toLowerCase().indexOf("lenny") != -1) {
 			bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
+		}
+
+		if (message.content.toLowerCase().indexOf("dat boi") != -1) {
+			bot.sendFile(message.channel,"./media/images/dat_boi.png");
 		}
 		//if bot is mentioned
 		if (message.isMentioned(bot.user) || botParameters.localMode && message.content.substring(0,1)=="!") {
