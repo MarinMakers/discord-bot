@@ -78,14 +78,14 @@ var commands = {
 	//},
 	'!howtocode':{
 		process: function(message, argument){
-			bot.sendMessage(message.channel, "1. When in doubt, go straight to production.\n2. console.log dat shit!\n3. Eat a banana.")
+			message.channel.sendMessage("1. When in doubt, go straight to production.\n2. console.log dat shit!\n3. Eat a banana.")
 		},
 		description: "Passes on our wisdom."
 	},
 	'!lastseen': {
 		process: function(message, argument){
 			lastSeen.lookup(argument, function(msg){
-				bot.sendMessage(message.channel, msg);
+				message.channel.sendMessage(msg);
 			})
 		},
 		usage: "<username>",
@@ -95,7 +95,7 @@ var commands = {
 		process: function(message, argument) {	
 
 			var messageFunction = function(msg){
-				bot.sendMessage(message.channel, msg);
+				message.channel.sendMessage(msg);
 			}
 
 			var method = getMethod(argument);
@@ -135,7 +135,7 @@ var commands = {
 		process: function(message, argument) {
 
 			var messageFunction = function(msg){
-				bot.sendMessage(message.channel, msg);
+				message.channel.sendMessage(msg);
 			}
 
 			var method = getMethod(argument);
@@ -161,7 +161,7 @@ var commands = {
 	},
 	'!ping': {
 		process: function(message, argument){
-			bot.sendMessage(message.channel, message.author + " pong!");
+			message.channel.sendMessage(message.author + " pong!");
 			// console.log("Ping from " + message.author + " aka " + message.author.username);
 			// console.log(message.server.memberMap)
 			console.log(message.author);
@@ -170,7 +170,7 @@ var commands = {
 	},
 	'!tableflip': {
 		process: function(message,argument) {
-			bot.sendMessage(message.channel, "(╯°□°）╯︵ ┻━┻");
+			message.channel.sendMessage("(╯°□°）╯︵ ┻━┻");
 		},
 		description: "Flip a table out of frustration."
 	},
@@ -178,17 +178,17 @@ var commands = {
 		process: function(message, argument){
 			if (bot.checkRole(message.author, message.server, 'developer')){
 				gitHelper.pull(function(msg){
-					bot.sendMessage(message.channel, msg);
+					message.channel.sendMessage(msg);
 				})
 			}else{
-				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
+				message.channel.sendMessage("You don't have enough badges to train me!");
 			}
 		},
 		description: "Pulls the bot's code from github on to the server. You must have the role 'developer' to use this functionality."
 	},
 	'!help': {
 		process: function(message, argument) {
-			bot.sendMessage(message.author, "Available Commands: ", function() {
+			message.author.sendMessage("Available Commands: ", function() {
 				for (var cmd in commands) {
 					var info = cmd;
 					var usage = commands[cmd].usage;
@@ -199,7 +199,7 @@ var commands = {
 					if(description){
 						info += "\n\t" + description;
 					}
-					bot.sendMessage(message.author,info);
+					message.author.sendMessage(info);
 				}
 			})
 		},
@@ -208,7 +208,7 @@ var commands = {
 	'!roll': {
 		process: function(message, argument) {
 			decider.rollDice(argument, function(result){
-				bot.sendMessage(message.channel, result)
+				message.channel.sendMessage(result)
 			})
 		},
 		usage: "<d20 syntax>",
@@ -216,7 +216,7 @@ var commands = {
 	},
 	'!say': {
 		process: function(message, argument) {
-			bot.sendMessage(message.channel, argument);
+			message.channel.sendMessage(argument);
 		},
 		usage: "<string>",
 		description: "Make the bot say something"
@@ -225,11 +225,11 @@ var commands = {
 		process: function(message, argument) {
 			if (bot.checkRole(message.author, message.server, 'developer') || bot.checkRole(message.author, message.server, 'Admin')) {
 				console.log("Being shut down by " + message.author.username);
-				bot.sendMessage(message.channel, "Beep boop, powering down.").then(function() {
+				message.channel.sendMessage("Beep boop, powering down.").then(function() {
 					process.exit();
 				});
 			}  else {
-				bot.sendMessage(message.channel, "You don't have enough badges to train me!");
+				message.channel.sendMessage("You don't have enough badges to train me!");
 			}
 		},
 		description: "This kills the robot. Must have proper privileges to execute."
@@ -237,7 +237,7 @@ var commands = {
 	'!w2g': {
 		process: function(message, argument) {
 			var watch2getherUrl = "https://www.watch2gether.com/go#" + getParameter(argument);
-			bot.sendMessage(message.channel, "watch2gether link: " + watch2getherUrl);
+			message.channel.sendMessage("watch2gether link: " + watch2getherUrl);
 		},
 		description: "Create a watch2gether.com lobby"
 	},
@@ -252,16 +252,16 @@ var commands = {
 			if (message.author.id == "157959654599557120"|| message.author.id == "127060142935113728") {
 				bot.joeMute = new Date();
 				bot.sendFile(message.channel, "./media/images/silence_spell.png");
-				bot.sendMessage(message.channel, message.author.username + " cast Silence on Joe!");
+				message.channel.sendMessage(message.author.username + " cast Silence on Joe!");
 			}  else {
-				bot.sendMessage(":V"); 
+				message.channel.sendMessage(":V"); 
 			}
 		}
 	},
 	'!fight': {
 		process: function(message, argument) {
 			var emote = (Math.random() > 0.9)?"ʕ ง•ᴥ•ʔ ง":"(ง'̀-'́)ง";
-			bot.sendMessage(message.channel, emote);
+			message.channel.sendMessage(emote);
 		}
 	},
 	'!oceanman': {
@@ -271,7 +271,7 @@ var commands = {
 				bot.cooldown = new Date();
 				if (message.author.voiceChannel == null) {
 					// If sender is not in a voice channel
-					bot.sendMessage(message.channel, "Fine you meme loving fucks\nhttps://www.youtube.com/watch?v=6E5m_XtCX3c");
+					message.channel.sendMessage("Fine you meme loving fucks\nhttps://www.youtube.com/watch?v=6E5m_XtCX3c");
 				}  else {
 					// Join voice channel and play the song
 					bot.joinVoiceChannel(message.author.voiceChannel, function(err, connection) {
@@ -280,7 +280,7 @@ var commands = {
 						}
 						if (connection) {
 							// If this is failing, chech out this article.. https://github.com/hydrabolt/discord.js/issues/415
-							bot.sendMessage(message.channel, "Please end my suffering");
+							message.channel.sendMessage("Please end my suffering");
 							console.log("Playing file - ocean_man.mp3");
 							connection.playFile('./audio/ocean_man.mp3');
 						}
@@ -289,7 +289,7 @@ var commands = {
 				
 			}  else {
 				var cooldownHours = 24 - parseInt(Math.abs(now - bot.cooldown) / 36e5);
-				bot.sendMessage(message.channel, "You can't use this meme for another " + cooldownHours + " hours. How tragic.");
+				message.channel.sendMessage("You can't use this meme for another " + cooldownHours + " hours. How tragic.");
 			}
 		},
 		description: "Obligatory meme. You're welcome Stephen"
@@ -317,20 +317,20 @@ bot.on('message', function(message){
 		if (message.author.id == "143825552787243008" && (new Date().valueOf() - bot.joeMute.valueOf()) < 60000) {
 			bot.deleteMessage(message,{'wait':0},function() {
 				var kindWords = (Math.random()< 0.5) ? "Quiet you." : "Shh";
-				bot.sendMessage(message.channel, kindWords);
+				message.channel.sendMessage(kindWords);
 			});
 		}
 
 		if (message.content.toLowerCase().indexOf("eat a banana") != -1) {
-			bot.sendMessage(message.channel,":banana:");
+			message.channel.sendMessage(":banana:");
 		}
 
 		if (message.content.toLowerCase().indexOf("lenny") != -1) {
-			bot.sendMessage(message.channel, "( ͡° ͜ʖ ͡°)")
+			message.channel.sendMessage( "( ͡° ͜ʖ ͡°)")
 		}
 
 		if (message.content.toLowerCase().indexOf("dat boi") != -1) {
-			bot.sendFile(message.channel,"./media/images/dat_boi.png");
+			message.channel.sendFile("./media/images/dat_boi.png");
 		}
 		//if bot is mentioned
 		if (message.isMentioned(bot.user) || botParameters.localMode && message.content.substring(0,1)=="!") {
@@ -342,7 +342,7 @@ bot.on('message', function(message){
 				if (commands[to_execute]) {
 					commands[to_execute].process(message, argument)
 				}  else {
-					bot.sendMessage(message.channel, "Unknown Command :(");
+					message.channel.sendMessage("Unknown Command :(");
 				}
 			}
 		}
