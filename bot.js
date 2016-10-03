@@ -353,7 +353,7 @@ bot.on('message', function(message){
 var http = require('http');
 var express = require('express');
 var app = express();
-var port = 3000;		
+var port = 3030;		
 
 app.get('/', function(req,res) {
 	console.log("Heard the boop");
