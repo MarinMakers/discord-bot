@@ -82,15 +82,15 @@ var commands = {
 		},
 		description: "Passes on our wisdom."
 	},
-	'!lastseen': {
-		process: function(message, argument){
-			lastSeen.lookup(argument, function(msg){
-				message.channel.sendMessage(msg);
-			})
-		},
-		usage: "<username>",
-		description: "Tells you the last time a user sent a message on discord, what they said, and where they said it."
-	},
+// 	'!lastseen': {
+// 		process: function(message, argument){
+// 			lastSeen.lookup(argument, function(msg){
+// 				message.channel.sendMessage(msg);
+// 			})
+// 		},
+// 		usage: "<username>",
+// 		description: "Tells you the last time a user sent a message on discord, what they said, and where they said it."
+// 	},
 	'!twitter': {
 		process: function(message, argument) {	
 
