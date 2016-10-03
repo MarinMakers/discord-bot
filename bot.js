@@ -306,7 +306,7 @@ function output(error, token) {
     }
 }
 
-bot.loginWithToken(discord_auth.token, output);
+bot.login(discord_auth.token, output);
 
 bot.joeMute = "";
 
