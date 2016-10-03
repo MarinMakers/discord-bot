@@ -251,7 +251,6 @@ var commands = {
 		process: function(message, argument) {
 			if (message.author.id == "157959654599557120"|| message.author.id == "127060142935113728") {
 				bot.joeMute = new Date();
-				bot.sendFile(message.channel, "./media/images/silence_spell.png");
 				message.channel.sendMessage(message.author.username + " cast Silence on Joe!");
 			}  else {
 				message.channel.sendMessage(":V"); 
@@ -269,23 +268,23 @@ var commands = {
 			var now = new Date();
 			if (!bot.cooldown || ( now.valueOf() - bot.cooldown.valueOf() ) >= 86400000) {
 				bot.cooldown = new Date();
-				if (message.author.voiceChannel == null) {
+// 				if (message.author.voiceChannel == null) {
 					// If sender is not in a voice channel
 					message.channel.sendMessage("Fine you meme loving fucks\nhttps://www.youtube.com/watch?v=6E5m_XtCX3c");
-				}  else {
-					// Join voice channel and play the song
-					bot.joinVoiceChannel(message.author.voiceChannel, function(err, connection) {
-						if (err) {
-							console.log(err)
-						}
-						if (connection) {
-							// If this is failing, chech out this article.. https://github.com/hydrabolt/discord.js/issues/415
-							message.channel.sendMessage("Please end my suffering");
-							console.log("Playing file - ocean_man.mp3");
-							connection.playFile('./audio/ocean_man.mp3');
-						}
-					});
-				}
+// 				}  else {
+// 					// Join voice channel and play the song
+// 					bot.joinVoiceChannel(message.author.voiceChannel, function(err, connection) {
+// 						if (err) {
+// 							console.log(err)
+// 						}
+// 						if (connection) {
+// 							// If this is failing, chech out this article.. https://github.com/hydrabolt/discord.js/issues/415
+// 							message.channel.sendMessage("Please end my suffering");
+// 							console.log("Playing file - ocean_man.mp3");
+// 							connection.playFile('./audio/ocean_man.mp3');
+// 						}
+// 					});
+// 				}
 				
 			}  else {
 				var cooldownHours = 24 - parseInt(Math.abs(now - bot.cooldown) / 36e5);
@@ -326,11 +325,11 @@ bot.on('message', function(message){
 		}
 
 		if (message.content.toLowerCase().indexOf("lenny") != -1) {
-			message.channel.sendMessage( "( ͡° ͜ʖ ͡°)")
+			message.channel.sendMessage("( ͡° ͜ʖ ͡°)")
 		}
 
 		if (message.content.toLowerCase().indexOf("dat boi") != -1) {
-			message.channel.sendFile("./media/images/dat_boi.png");
+			message.channel.sendMessage("oh shit waddup");
 		}
 		//if bot is mentioned
 		if (message.isMentioned(bot.user) || botParameters.localMode && message.content.substring(0,1)=="!") {
