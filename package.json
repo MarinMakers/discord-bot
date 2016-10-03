@@ -18,7 +18,7 @@
   "homepage": "https://github.com/MarinMakers/discord-bot#readme",
   "dependencies": {
     "d20": "^1.4.0",
-    "discord.js": "^8.1.0",
+    "discord.js": "^9.3.0",
     "express": "^4.14.0",
     "fs": "0.0.2",
     "http": "0.0.0",
