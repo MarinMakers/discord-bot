@@ -312,7 +312,7 @@ bot.joeMute = "";
 
 bot.on('message', function(message){
 	if (!message.author.bot) {
-		lastSeen.learn(message);
+		//lastSeen.learn(message);
 
 		if (message.author.id == "143825552787243008" && (new Date().valueOf() - bot.joeMute.valueOf()) < 60000) {
 			bot.deleteMessage(message,{'wait':0},function() {
