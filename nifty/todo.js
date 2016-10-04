@@ -20,7 +20,7 @@ var add = function(taskToAdd, message, messageFunction){
 	}
 
 	var newTask = {
-		user: 		message.sender.name,
+		user: 		message.author.username,
 		task: 		taskToAdd,
 		complete: 	false,
 		channel: 	message.channel.name,
@@ -103,11 +103,11 @@ var showTasks = function(message, messageFunction){
 }
 
 var exportList = function(message, messageFunction) {
-	bot.sendFile(message.channel,"./db/todo.json","To-do List","Uploading File...",function(err,msg) {
+	message.channel.sendFile("./db/todo.json","To-do List","Uploading File...",function(err,msg) {
 		if (err) {
-			bot.sendMessage(message.channel,err);
+			message.channel.sendMessage(err);
 		}  else {
-			bot.sendMessage(message.channel,"File uploaded!");
+			message.channel.sendMessage("File uploaded!");
 		}
 	});
 }
