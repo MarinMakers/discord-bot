@@ -348,19 +348,19 @@ bot.on('message', function(message){
 	}
 })
 
-//HTTP server stuff
-var http = require('http');
-var express = require('express');
-var app = express();
-var port = 3030;		
+// //HTTP server stuff
+// var http = require('http');
+// var express = require('express');
+// var app = express();
+// var port = 3030;		
 
-app.get('/', function(req,res) {
-	console.log("Heard the boop");
-	res.send("Hello World");
-})
+// app.get('/', function(req,res) {
+// 	console.log("Heard the boop");
+// 	res.send("Hello World");
+// })
 
-app.listen(port, function(){
-	console.log("Listening on port: " + port);
-})
+// app.listen(port, function(){
+// 	console.log("Listening on port: " + port);
+// })
 
 module.exports = bot;
